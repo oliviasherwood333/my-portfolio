@@ -1,0 +1,650 @@
+/* ==========================================================================
+   Olivia Sherwood — portfolio design system
+   Plain CSS, no build step. Organised so each section can be scanned on its
+   own: tokens -> reset -> base type -> layout -> components -> utilities.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   Palette is fixed by the brief (Urban Wild Studio reference, softened to
+   pastel). Forest green carries body-text contrast; coral is the ONE bold
+   accent, spent deliberately (stats, CTAs); blush is secondary/background.
+   -------------------------------------------------------------------------- */
+:root {
+  --color-cream: #F1E9DC;
+  --color-forest: #1E3B2C;
+  --color-coral: #E8836C;
+  --color-blush: #F3CAD6;
+
+  /* Tints/shades derived from the four brand colours, used for borders,
+     hover states etc, so we never reach for an arbitrary grey. */
+  --color-forest-soft: #3A5A47;
+  --color-cream-dark: #E5D9C6;
+  --color-coral-dark: #D66E56;
+  --color-white: #FFFFFF;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Type scale: clamp() so headlines scale with viewport instead of jumping
+     at breakpoints. Values chosen so the homepage statement stays confident
+     but never wraps awkwardly on small phones. */
+  --size-display-xl: clamp(2.25rem, 5vw + 1rem, 4.5rem);
+  --size-display-lg: clamp(1.75rem, 3vw + 1rem, 3rem);
+  --size-display-md: clamp(1.375rem, 1.5vw + 1rem, 1.875rem);
+  --size-body-lg: clamp(1.125rem, 0.5vw + 1rem, 1.25rem);
+  --size-body: 1rem;
+  --size-small: 0.875rem;
+  --size-mono: 0.8125rem;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  --container-width: 72rem;
+
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-cream);
+  color: var(--color-forest);
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+h1, h2, h3, h4, p, figure {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Respect reduced-motion at the base level: kill all transitions/animations
+   for anyone who has asked for it, rather than handling it per-component. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Accessibility helpers
+   -------------------------------------------------------------------------- */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-sm);
+  background: var(--color-forest);
+  color: var(--color-cream);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 0.5rem;
+  z-index: 100;
+  transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+  top: var(--space-sm);
+}
+
+/* Single, visible focus treatment used everywhere instead of the browser
+   default outline — coral ring keeps it on-brand and easy to spot. */
+:focus-visible {
+  outline: 3px solid var(--color-coral);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Typography
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: var(--size-display-xl); }
+h2 { font-size: var(--size-display-lg); }
+h3 { font-size: var(--size-display-md); }
+
+.lede {
+  font-size: var(--size-body-lg);
+  max-width: 42rem;
+}
+
+/* Eyebrows/labels/stat captions: the mono face is the "utility" register,
+   always uppercase + letter-spaced so it reads distinctly from body copy. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--size-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-forest-soft);
+}
+
+.stat-number {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--color-coral);
+  font-size: clamp(2rem, 3vw + 1rem, 3.5rem);
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   5. Layout
+   -------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+.section {
+  padding-block: var(--space-xl);
+}
+
+.section--tight {
+  padding-block: var(--space-lg);
+}
+
+/* --------------------------------------------------------------------------
+   6. Header / nav
+   -------------------------------------------------------------------------- */
+.site-header {
+  padding-block: var(--space-md);
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.site-logo {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.25rem;
+  text-decoration: none;
+}
+
+.site-nav ul {
+  display: flex;
+  gap: var(--space-md);
+  list-style: none;
+}
+
+.site-nav a {
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: var(--size-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 2px solid transparent;
+  padding-block: 0.2rem;
+  transition: border-color var(--transition-fast);
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
+  border-color: var(--color-coral);
+}
+
+/* --------------------------------------------------------------------------
+   7. Circle motif
+   Used deliberately per the brief: framing an image, or backing a stat —
+   never as generic decoration. Kept to a handful of utility classes so it
+   stays a considered device rather than wallpaper.
+   -------------------------------------------------------------------------- */
+.circle-frame {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+
+.circle-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.circle-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-coral);
+  color: var(--color-cream);
+  width: 3.5rem;
+  height: 3.5rem;
+  flex-shrink: 0;
+}
+
+/* Decorative circle placed behind content via a pseudo-element so it never
+   interferes with text selection or screen readers. */
+.circle-decor {
+  position: relative;
+  isolation: isolate;
+}
+
+.circle-decor::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--color-blush);
+}
+
+/* Placement for the Visuals page heading — one deliberate use of the circle
+   motif per the brief's "not wallpaper" rule. Sized here rather than baked
+   into the base class so other uses can define their own placement. */
+h1.circle-decor::before {
+  width: 5rem;
+  height: 5rem;
+  top: -0.75rem;
+  left: -1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   8. Buttons
+   -------------------------------------------------------------------------- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--size-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--radius-pill);
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.button--primary {
+  background: var(--color-coral);
+  color: var(--color-cream);
+}
+
+.button--primary:hover {
+  background: var(--color-coral-dark);
+  transform: translateY(-1px);
+}
+
+.button--ghost {
+  background: transparent;
+  color: var(--color-forest);
+  border: 1.5px solid var(--color-forest);
+}
+
+.button--ghost:hover {
+  background: var(--color-forest);
+  color: var(--color-cream);
+}
+
+/* --------------------------------------------------------------------------
+   9. Pills (tags + skills)
+   -------------------------------------------------------------------------- */
+.pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.pill {
+  font-family: var(--font-mono);
+  font-size: var(--size-mono);
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-blush);
+  color: var(--color-forest);
+  white-space: nowrap;
+}
+
+.pill--outline {
+  background: transparent;
+  border: 1.5px solid var(--color-forest-soft);
+}
+
+/* --------------------------------------------------------------------------
+   10. Homepage nav card grid
+   -------------------------------------------------------------------------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 40rem) {
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  padding: var(--space-md);
+  text-decoration: none;
+  color: var(--color-forest);
+  border: 1px solid var(--color-cream-dark);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -12px rgba(30, 59, 44, 0.25);
+}
+
+.project-card__stat {
+  margin-top: auto;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-cream-dark);
+}
+
+.project-card__stat .stat-number {
+  font-size: 1.75rem;
+}
+
+/* Placeholder ("coming soon") card: same shape, deliberately muted so it
+   doesn't read as a broken or dead link. */
+.project-card--placeholder {
+  background: var(--color-cream-dark);
+  color: var(--color-forest-soft);
+  border-style: dashed;
+  cursor: default;
+}
+
+.project-card--placeholder .eyebrow {
+  color: var(--color-forest-soft);
+}
+
+/* Visuals card: distinct treatment (solid forest background) so it doesn't
+   get mistaken for a 5th case study while still living in the same grid. */
+.project-card--visuals {
+  background: var(--color-forest);
+  color: var(--color-cream);
+  border-color: var(--color-forest);
+}
+
+.project-card--visuals .eyebrow {
+  color: var(--color-blush);
+}
+
+/* --------------------------------------------------------------------------
+   11. Numbered process sequence (case study pages only)
+   -------------------------------------------------------------------------- */
+.process-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  counter-reset: step;
+}
+
+@media (min-width: 48rem) {
+  .process-steps {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.process-step {
+  position: relative;
+  padding-top: var(--space-lg);
+}
+
+.process-step::before {
+  counter-increment: step;
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: var(--font-mono);
+  font-size: var(--size-small);
+  color: var(--color-coral);
+  border: 1.5px solid var(--color-coral);
+  border-radius: 50%;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --------------------------------------------------------------------------
+   12. Results stat blocks
+   -------------------------------------------------------------------------- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 48rem) {
+  .stat-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stat-block {
+  background: var(--color-forest);
+  color: var(--color-cream);
+  border-radius: var(--radius-card);
+  padding: var(--space-md);
+}
+
+.stat-block .stat-number {
+  display: block;
+}
+
+.stat-block .stat-label {
+  font-family: var(--font-mono);
+  font-size: var(--size-small);
+  color: var(--color-blush);
+}
+
+/* --------------------------------------------------------------------------
+   13. Case study page scaffolding
+   -------------------------------------------------------------------------- */
+.case-hero {
+  background: var(--color-forest);
+  color: var(--color-cream);
+}
+
+.case-hero .eyebrow {
+  color: var(--color-blush);
+}
+
+.meta-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  margin-top: var(--space-md);
+}
+
+.meta-list dt {
+  font-family: var(--font-mono);
+  font-size: var(--size-small);
+  color: var(--color-blush);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.meta-list dd {
+  margin: 0.35rem 0 0;
+  font-size: var(--size-body);
+}
+
+.key-screen {
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  padding: var(--space-sm);
+  border: 1px solid var(--color-cream-dark);
+}
+
+.key-screen img {
+  border-radius: 0.75rem;
+}
+
+.key-screen figcaption {
+  font-family: var(--font-mono);
+  font-size: var(--size-small);
+  color: var(--color-forest-soft);
+  padding-top: var(--space-sm);
+}
+
+.screen-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 40rem) {
+  .screen-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.why-it-worked {
+  background: var(--color-blush);
+  border-radius: var(--radius-card);
+  padding: var(--space-lg);
+}
+
+/* --------------------------------------------------------------------------
+   14. Visuals gallery page
+   -------------------------------------------------------------------------- */
+.visuals-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 40rem) {
+  .visuals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 64rem) {
+  .visuals-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.visual-item {
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--color-white);
+  border: 1px solid var(--color-cream-dark);
+}
+
+.visual-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.visual-item figcaption {
+  font-family: var(--font-mono);
+  font-size: var(--size-small);
+  padding: var(--space-sm);
+  color: var(--color-forest-soft);
+}
+
+/* --------------------------------------------------------------------------
+   15. Footer
+   -------------------------------------------------------------------------- */
+.site-footer {
+  background: var(--color-forest);
+  color: var(--color-cream);
+}
+
+.site-footer a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.site-footer .container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+.site-footer p {
+  font-family: var(--font-mono);
+  font-size: var(--size-small);
+}

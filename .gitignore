@@ -1,0 +1,9 @@
+# Source/reference materials used to build the site — not part of the
+# deployed deliverable, kept local only.
+/Figma-case-studies/
+/Moodboard/
+PORTFOLIO_BRIEF.md
+
+# OS and local tooling
+.DS_Store
+.claude/
