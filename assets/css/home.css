@@ -1,0 +1,398 @@
+/* ==========================================================================
+   Homepage-only stylesheet.
+
+   The rest of the site (case study pages, visuals page) still uses the
+   original assets/css/style.css design system. This file is scoped to
+   index.html only, deliberately, while the homepage is rebuilt to the
+   updated brief — the older palette/type stays live everywhere else until
+   those pages get migrated in a later pass. That's why some rules here
+   duplicate rather than extend style.css: this is a parallel system, not a
+   patch on top of the old one.
+   ========================================================================== */
+
+:root {
+  --color-base: #F7F5F2;
+  --color-ink: #14161F;
+  --color-blue: #2D5BFF;
+  --color-pink: #FF3D8A;
+
+  --color-base-dim: #EDEAE4;
+  --color-ink-soft: #4A4D5C;
+  --color-white: #FFFFFF;
+
+  --font-display: "Roboto Slab", Georgia, serif;
+  --font-body: "Roboto", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, monospace;
+
+  --size-display-xl: clamp(2rem, 4vw + 1rem, 3.75rem);
+  --size-body-lg: clamp(1.125rem, 0.5vw + 1rem, 1.25rem);
+  --size-small: 0.875rem;
+  --size-mono: 0.8125rem;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  --container-width: 68rem;
+}
+
+* , *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--color-base);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+img { max-width: 100%; display: block; }
+h1, h2, h3, p, dl, figure { margin: 0; }
+ul { margin: 0; padding: 0; }
+a { color: inherit; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-sm);
+  background: var(--color-ink);
+  color: var(--color-base);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 0.5rem;
+  z-index: 100;
+  transition: top 0.15s ease;
+}
+.skip-link:focus { top: var(--space-sm); }
+
+/* One consistent focus treatment, in the primary accent, everywhere. */
+:focus-visible {
+  outline: 3px solid var(--color-blue);
+  outline-offset: 3px;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: var(--size-display-xl); }
+h2 { font-size: clamp(1.5rem, 2vw + 1rem, 2rem); }
+
+.lede {
+  font-size: var(--size-body-lg);
+  color: var(--color-ink-soft);
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--size-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-blue);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--space-md);
+}
+
+.section { padding-block: var(--space-xl); }
+.section--tight { padding-block: var(--space-lg); }
+
+/* --- Header: avatar mark + name, eyebrow, nav --- */
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.site-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+/* The one deliberate circle in the header: an initials mark rather than a
+   photo, since we don't have a real headshot asset to source honestly. */
+.avatar-mark {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-ink);
+  color: var(--color-base);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.site-identity-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.site-name {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.site-nav ul {
+  display: flex;
+  gap: var(--space-md);
+  list-style: none;
+}
+
+.site-nav a {
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: var(--size-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 2px solid transparent;
+  padding-block: 0.2rem;
+}
+
+.site-nav a:hover, .site-nav a[aria-current="page"] {
+  border-color: var(--color-blue);
+}
+
+/* --- Intro block: two columns on wide screens, stacked on mobile --- */
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  align-items: start;
+}
+
+@media (min-width: 56rem) {
+  .intro-grid {
+    grid-template-columns: 3fr 2fr;
+  }
+}
+
+.intro-copy p + p { margin-top: var(--space-sm); }
+
+.intro-transition {
+  margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--size-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-ink);
+}
+
+/* --- Project list: single-column stacked rows, per Home.pdf's pattern --- */
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.project-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.project-images {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 40rem) {
+  .project-images {
+    grid-template-columns: 1.3fr 1fr 1fr;
+  }
+}
+
+.project-images img {
+  width: 100%;
+  height: 16rem;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  background: var(--color-base-dim);
+}
+
+@media (min-width: 40rem) {
+  .project-images img { height: 20rem; }
+}
+
+.project-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 40rem) {
+  .project-details {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.project-details h3 { font-size: 1.375rem; }
+
+.project-details .lede {
+  margin-top: 0.35rem;
+  font-size: 1rem;
+}
+
+.project-role p {
+  font-size: 1rem;
+}
+
+.see-project {
+  display: inline-block;
+  margin-top: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--size-mono);
+  text-decoration: none;
+  color: var(--color-blue);
+  border-bottom: 2px solid var(--color-blue);
+  padding-bottom: 0.1rem;
+}
+
+.see-project:hover { color: var(--color-ink); border-color: var(--color-ink); }
+
+/* Coming-soon placeholder row: no images, muted, no link — reads clearly
+   as upcoming rather than broken. Pink is the one place this gets used,
+   per the brief's "spend the pink sparingly" rule. */
+.project-row--placeholder {
+  padding: var(--space-md);
+  border: 1.5px dashed var(--color-pink);
+  border-radius: var(--radius-card);
+}
+
+.project-row--placeholder h3 { color: var(--color-ink-soft); }
+.project-row--placeholder .eyebrow { color: var(--color-pink); }
+
+/* --- Skills pills --- */
+.pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.pill {
+  font-family: var(--font-mono);
+  font-size: var(--size-mono);
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--color-ink);
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+/* --- Testimonials: "What folk say" --- */
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 48rem) {
+  .testimonial-grid {
+    grid-template-columns: 1fr 2fr;
+  }
+}
+
+.testimonial-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.testimonial {
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-base-dim);
+}
+
+.testimonial:first-child { border-top: none; padding-top: 0; }
+
+.testimonial blockquote {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.testimonial cite {
+  display: block;
+  margin-top: 0.5rem;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: var(--size-mono);
+  color: var(--color-ink-soft);
+}
+
+/* --- Footer --- */
+.site-footer { border-top: 1px solid var(--color-base-dim); }
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+@media (min-width: 40rem) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+.footer-grid a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+/* Circle motif, used once here per the brief's "not wallpaper" rule —
+   behind the intro heading, echoing the header avatar mark. */
+.circle-decor { position: relative; isolation: isolate; }
+
+.circle-decor::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--color-pink);
+  opacity: 0.35;
+  width: 4.5rem;
+  height: 4.5rem;
+  top: -1rem;
+  left: -1.25rem;
+}

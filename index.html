@@ -6,19 +6,27 @@
   <title>Olivia Sherwood — Content &amp; Product Design</title>
   <meta name="description" content="Senior Content Designer at OVO with five years of content design experience, who also maps flows, shapes IA, and prototypes and tests the product those words live in.">
 
-  <!-- Google Fonts: Fraunces (display), Inter (body), IBM Plex Mono (utility/labels) -->
+  <!-- Google Fonts: Roboto (body), Roboto Slab (display), Roboto Mono (utility) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Roboto+Slab:wght@700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Homepage-only stylesheet — see the comment at the top of home.css for why
+       this isn't just added to the shared style.css used by the other pages. -->
+  <link rel="stylesheet" href="assets/css/home.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <header class="site-header">
+  <header class="site-header section--tight">
     <div class="container">
-      <a class="site-logo" href="index.html">Olivia Sherwood</a>
+      <a class="site-identity" href="index.html">
+        <span class="avatar-mark" aria-hidden="true">OS</span>
+        <span class="site-identity-text">
+          <span class="site-name">Olivia Sherwood</span>
+          <span class="eyebrow">Portfolio</span>
+        </span>
+      </a>
       <nav class="site-nav" aria-label="Primary">
         <ul>
           <li><a href="index.html" aria-current="page">Work</a></li>
@@ -30,126 +38,172 @@
 
   <main id="main">
 
-    <!-- Positioning statement: the single most important line on the site.
-         Deliberately no supporting paragraph underneath — the work and the
-         skills list do the rest of the talking. -->
-    <section class="section section--tight">
+    <!-- Intro block: positioning statement + a couple of short paragraphs,
+         two columns on wide screens (structure borrowed from Home.pdf),
+         then a short transition line into the project list. -->
+    <section class="section--tight">
       <div class="container">
-        <h1>Senior Content Designer at OVO with five years of content design experience, who also maps flows, shapes IA, and prototypes and tests the product those words live in.</h1>
+        <div class="intro-grid">
+          <h1 class="circle-decor">Senior Content Designer at OVO with five years of content design experience, who also maps flows, shapes IA, and prototypes and tests the product those words live in.</h1>
+          <div class="intro-copy">
+            <p class="lede">I design journeys end to end — not just the words, but the flow they sit in. My job is turning technical, jargon-heavy propositions into something a customer can act on in seconds.</p>
+            <p class="lede">That means content strategy and UX writing, but increasingly also the flows, IA, and prototypes those words live inside — because good content design means understanding the whole journey, not just the copy deck.</p>
+            <p class="intro-transition">Let's get into the work</p>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Six nav cards: 4 real case studies + a coming-soon placeholder +
-         a Visuals card styled distinctly so it doesn't read as a 5th project. -->
-    <section class="section section--tight" aria-labelledby="work-heading">
-      <h2 id="work-heading" class="visually-hidden">Case studies</h2>
+    <!-- Project list: single-column stacked rows, real screenshots pulled
+         from the source case study PDFs — see brief's imagery rules. -->
+    <section class="section--tight" aria-labelledby="work-heading">
+      <h2 id="work-heading" class="visually-hidden">Projects</h2>
       <div class="container">
-        <div class="card-grid">
+        <div class="project-list">
 
-          <a class="project-card" href="case-studies/free-electricity.html">
-            <span class="eyebrow">Case study — OVO Beyond</span>
-            <h3>Free electricity</h3>
-            <p>Turning a capped, technical energy offer into a weekly ritual customers actually understood and used.</p>
-            <ul class="pill-list" aria-label="Skills used">
-              <li class="pill">UX writing</li>
-              <li class="pill">Content hierarchy</li>
-              <li class="pill">Campaign alignment</li>
-            </ul>
-            <div class="project-card__stat">
-              <span class="stat-number">85,000+</span>
-              <span class="stat-label eyebrow">sign-ups in the first few weeks</span>
+          <article class="project-row">
+            <div class="project-images">
+              <img src="assets/images/free-electricity/hero-signup.jpg" alt="Three OVO app sign-up screens for the free electricity offer, including appliance exclusions." loading="lazy">
+              <img src="assets/images/free-electricity/portrait-lifestyle.jpg" alt="Portrait of a smiling customer, part of the free electricity campaign photography." loading="lazy">
+              <img src="assets/images/free-electricity/slot-picker.jpg" alt="Weekly time-slot picker screen for choosing free electricity hours." loading="lazy">
             </div>
-          </a>
-
-          <a class="project-card" href="case-studies/points-rewards.html">
-            <span class="eyebrow">Case study — OVO Beyond</span>
-            <h3>Points &amp; rewards pilot</h3>
-            <p>A scoped-small pilot testing whether a simple points mechanic could bring customers back to the app.</p>
-            <ul class="pill-list" aria-label="Skills used">
-              <li class="pill">Content strategy</li>
-              <li class="pill">User flows</li>
-              <li class="pill">Stakeholder management</li>
-            </ul>
-            <div class="project-card__stat">
-              <span class="stat-number">4,600</span>
-              <span class="stat-label eyebrow">sign-ups in 11 days</span>
+            <div class="project-details">
+              <div>
+                <span class="eyebrow">Project</span>
+                <h3>Free electricity campaign</h3>
+                <p class="lede">Bringing two hours of free power to life in the OVO app.</p>
+              </div>
+              <div class="project-role">
+                <p>I led the UX copy across the end-to-end flow — from the sign-up journey and setup states to the dashboard and the plain-English explainer that finally made 1kWh make sense.</p>
+                <a class="see-project" href="case-studies/free-electricity.html">See project →</a>
+              </div>
             </div>
-          </a>
+          </article>
 
-          <a class="project-card" href="case-studies/filters.html">
-            <span class="eyebrow">Case study — OVO app</span>
-            <h3>Redesigning filters</h3>
-            <p>Rebuilding a filter component so customers could actually find the offers meant for them.</p>
-            <ul class="pill-list" aria-label="Skills used">
-              <li class="pill">IA &amp; naming</li>
-              <li class="pill">Usability testing</li>
-              <li class="pill">Accessibility</li>
-            </ul>
-            <div class="project-card__stat">
-              <span class="stat-number">25,000</span>
-              <span class="stat-label eyebrow">customers in the first A/B rollout</span>
+          <article class="project-row">
+            <div class="project-images">
+              <img src="assets/images/points-rewards/entry-banner.jpg" alt="In-app banner promoting the OVO points scheme, with a phone screen showing how to earn points." loading="lazy">
+              <img src="assets/images/points-rewards/dashboard-progress.jpg" alt="Dashboard screens showing a points balance and energy credit earned so far." loading="lazy">
+              <img src="assets/images/points-rewards/redemption.jpg" alt="Redemption screens converting a points balance into energy credit." loading="lazy">
             </div>
-          </a>
-
-          <a class="project-card" href="case-studies/summer-savings.html">
-            <span class="eyebrow">Case study — OVO Beyond</span>
-            <h3>Summer savings</h3>
-            <p>Leading the content for a loyalty campaign that sold out faster than the team could restock it.</p>
-            <ul class="pill-list" aria-label="Skills used">
-              <li class="pill">Lead content design</li>
-              <li class="pill">Brand alignment</li>
-              <li class="pill">Partner content</li>
-            </ul>
-            <div class="project-card__stat">
-              <span class="stat-number">21 hrs</span>
-              <span class="stat-label eyebrow">until week one's pizza quota sold out</span>
+            <div class="project-details">
+              <div>
+                <span class="eyebrow">Project</span>
+                <h3>Integrating points in OVO's app</h3>
+                <p class="lede">Testing a new concept to drive in-app engagement.</p>
+              </div>
+              <div class="project-role">
+                <p>I worked on the UX content across the journey — helping customers understand how to join, collect, and track their points, in a pilot scoped small enough to learn fast.</p>
+                <a class="see-project" href="case-studies/points-rewards.html">See project →</a>
+              </div>
             </div>
-          </a>
+          </article>
 
-          <div class="project-card project-card--placeholder">
+          <article class="project-row">
+            <div class="project-images">
+              <img src="assets/images/filters/competitive-review.jpg" alt="Competitive review of filter labels across other apps, used to inform the redesign." loading="lazy">
+              <img src="assets/images/filters/final-ui.jpg" alt="Finished Offers screen with the new icon-and-label filter component." loading="lazy">
+              <img src="assets/images/filters/label-rewrite.jpg" alt="Diagram mapping old filter labels to their shorter, rewritten versions." loading="lazy">
+            </div>
+            <div class="project-details">
+              <div>
+                <span class="eyebrow">Project</span>
+                <h3>Improving OVO's quick filters</h3>
+                <p class="lede">Making it easier to find offers, without the faff.</p>
+              </div>
+              <div class="project-role">
+                <p>I led the research, UI, and content — from reworking labels to improving hierarchy and the active filter states people could actually see.</p>
+                <a class="see-project" href="case-studies/filters.html">See project →</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-row">
+            <div class="project-images">
+              <img src="assets/images/summer-savings/promo-tile.jpg" alt="Summer Savings campaign promo tile with partner logos including Papa John's and Costa." loading="lazy">
+              <img src="assets/images/summer-savings/cinema-lifestyle.jpg" alt="Group of friends enjoying popcorn at the cinema, part of the summer rewards campaign photography." loading="lazy">
+              <img src="assets/images/summer-savings/redemption-journey.jpg" alt="Three phone screens showing the reward redemption journey." loading="lazy">
+            </div>
+            <div class="project-details">
+              <div>
+                <span class="eyebrow">Project</span>
+                <h3>Summer rewards campaign</h3>
+                <p class="lede">Driving repeat engagement with weekly freebies.</p>
+              </div>
+              <div class="project-role">
+                <p>I designed the content across the full journey, making it easy to discover, claim, and enjoy every reward — from partner logos to push notifications to the claim page itself.</p>
+                <a class="see-project" href="case-studies/summer-savings.html">See project →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Coming-soon placeholder: real project name (from Home.pdf), no
+               fabricated process/results, no images, no link — per brief. -->
+          <article class="project-row project-row--placeholder">
             <span class="eyebrow">Coming soon</span>
-            <h3>Case study 5</h3>
-            <p>A fifth project is in the works — check back soon.</p>
-          </div>
-
-          <a class="project-card project-card--visuals" href="visuals.html">
-            <span class="eyebrow">Browse the work</span>
-            <h3>Visuals</h3>
-            <p>Real screens from all four case studies, no reading required.</p>
-          </a>
+            <h3>Energy Experts video booking</h3>
+            <p class="lede">A responsive booking flow connecting customers with OVO's Energy Experts — full case study write-up coming soon.</p>
+          </article>
 
         </div>
       </div>
     </section>
 
-    <!-- Skills pills: honest mix of content and product/UX skills, pulled
-         from what's actually demonstrated across the 4 case studies above. -->
-    <section class="section section--tight" aria-labelledby="skills-heading">
+    <!-- Skills pills -->
+    <section class="section--tight" aria-labelledby="skills-heading">
       <div class="container">
         <h2 id="skills-heading" class="eyebrow" style="display:block; margin-bottom: var(--space-sm);">Skills</h2>
         <ul class="pill-list">
-          <li class="pill pill--outline">UX writing</li>
-          <li class="pill pill--outline">Content strategy</li>
-          <li class="pill pill--outline">User flows</li>
-          <li class="pill pill--outline">Information architecture</li>
-          <li class="pill pill--outline">Prototyping</li>
-          <li class="pill pill--outline">Usability testing</li>
-          <li class="pill pill--outline">Accessibility</li>
-          <li class="pill pill--outline">Stakeholder management</li>
-          <li class="pill pill--outline">Naming &amp; taxonomy</li>
-          <li class="pill pill--outline">Content hierarchy</li>
-          <li class="pill pill--outline">Brand &amp; campaign alignment</li>
-          <li class="pill pill--outline">Third-party content review</li>
+          <li class="pill">UX writing</li>
+          <li class="pill">Content strategy</li>
+          <li class="pill">User flows</li>
+          <li class="pill">Information architecture</li>
+          <li class="pill">Prototyping</li>
+          <li class="pill">Usability testing</li>
+          <li class="pill">Accessibility</li>
+          <li class="pill">Stakeholder management</li>
+          <li class="pill">Naming &amp; taxonomy</li>
+          <li class="pill">Content hierarchy</li>
+          <li class="pill">Brand &amp; campaign alignment</li>
+          <li class="pill">Third-party content review</li>
         </ul>
+      </div>
+    </section>
+
+    <!-- Testimonials: real quotes carried over from her previous portfolio
+         (Home.pdf), not invented — see brief's "don't fabricate" rule. -->
+    <section class="section--tight" aria-labelledby="testimonials-heading">
+      <div class="container">
+        <div class="testimonial-grid">
+          <h2 id="testimonials-heading">What folk say</h2>
+          <div class="testimonial-list">
+            <div class="testimonial">
+              <blockquote>"Boundless energy, brilliant ideas, and a get-things-done attitude."</blockquote>
+              <cite>— Mark Wray, former colleague at PA Media</cite>
+            </div>
+            <div class="testimonial">
+              <blockquote>"Capable of delivering design and copy single-handedly."</blockquote>
+              <cite>— Ben Skelton, senior content designer at OVO</cite>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer section--tight">
     <div class="container">
-      <p>© 2026 Olivia Sherwood</p>
-      <p><a href="mailto:hello@example.com">hello@example.com</a> · <a href="https://www.linkedin.com/">LinkedIn</a></p>
+      <div class="footer-grid">
+        <div>
+          <span class="eyebrow">Contact</span>
+          <p><a href="mailto:oliviaellensherwood@gmail.com">oliviaellensherwood@gmail.com</a></p>
+        </div>
+        <div>
+          <span class="eyebrow">Social</span>
+          <p><a href="https://www.linkedin.com/">LinkedIn</a></p>
+        </div>
+      </div>
     </div>
   </footer>
 
