@@ -48,6 +48,10 @@
         // the same cached URLs as the originals) to avoid a blank on the lap.
         var imgs = clone.querySelectorAll("img");
         for (var i = 0; i < imgs.length; i++) imgs[i].loading = "eager";
+        // Cloned case-study links must stay out of the tab order, or keyboard
+        // users would hit the same link once per clone set.
+        var links = clone.querySelectorAll("a");
+        for (var j = 0; j < links.length; j++) links[j].tabIndex = -1;
         carousel.appendChild(clone);
       });
     }

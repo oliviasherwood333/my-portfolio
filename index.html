@@ -35,44 +35,47 @@
   <header class="site-header" id="top">
     <div class="container">
       <a class="site-logo" href="index.html">Olivia Sherwood</a>
-      <nav class="site-nav" aria-label="Primary">
-        <ul>
-          <li><a href="index.html" aria-current="page">Home</a></li>
-          <!-- About is a later pass — shown for wayfinding, inert for now so
-               it can't 404. Becomes a link once the page exists. -->
-          <li><span class="is-upcoming">About me</span></li>
-        </ul>
+
+      <!-- Below 768px the nav collapses into the hamburger and drops down as a
+           panel beneath the header. The theme toggle stays out in the header
+           row — it's a one-tap control and shouldn't need a menu to reach. -->
+      <div class="site-header__actions">
+        <nav class="site-nav" id="primary-nav" aria-label="Primary">
+          <ul>
+            <li><a href="index.html" aria-current="page">Home</a></li>
+            <li><a href="#about-me">About me</a></li>
+          </ul>
+        </nav>
+
         <!-- Light/dark toggle: an iOS-style switch. A real <button
              role="switch"> — keyboard-operable, with aria-checked + a
              state-dependent aria-label kept in sync by JS. -->
         <button type="button" class="theme-toggle" role="switch" aria-checked="false" aria-label="Switch to dark mode">
           <span class="theme-toggle__knob" aria-hidden="true"></span>
         </button>
-      </nav>
+
+        <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+        </button>
+      </div>
     </div>
   </header>
 
   <main id="main">
 
-    <!-- Intro block: headline left, intro copy right at desktop width -------->
+    <!-- Intro block ---------------------------------------------------------->
     <section class="section--tight" aria-labelledby="intro-heading">
-      <div class="container">
+      <div class="container intro__container">
         <p class="eyebrow">Portfolio</p>
-        <div class="intro__grid">
-          <div>
-            <h1 id="intro-heading">Hi, I'm Olivia. <span class="intro__tagline">I design digital experiences where product thinking, UX and content come together.</span></h1>
-          </div>
-          <div class="intro__copy">
-            <p class="prose">I specialise in turning complex problems into simple experiences. My background in content design helps me create products that are easier to understand, easier to use and grounded in customer needs. I'm currently a designer at OVO Energy.</p>
-            <p class="intro__transition">Selected work</p>
-          </div>
-        </div>
+        <h1 id="intro-heading">Hi, I'm Olivia. I turn complex products into simple experiences.</h1>
+        <p class="intro__sub">With a background in content design, I design digital products that are clear, useful, and grounded in customer needs.</p>
       </div>
     </section>
 
     <!-- Project list --------------------------------------------------------->
-    <section id="work" aria-label="Selected projects">
+    <section id="work" aria-labelledby="work-heading">
       <div class="container">
+        <h2 id="work-heading" class="eyebrow work__heading">Selected work</h2>
         <div class="project-list">
 
           <!-- 1. Free electricity -->
@@ -80,34 +83,34 @@
             <div class="carousel" role="group" aria-label="Free electricity — app screens" tabindex="0">
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/free-electricity-1.jpg" alt="A customer drying her hair at home." loading="lazy" width="440" height="440">
+                  <img src="assets/images/free-electricity-1.jpg" alt="A customer drying her hair at home." loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/free-electricity-2.png" alt="OVO app screens introducing free electricity — 'Get ready for free electricity' and 'Free electricity every week'." loading="lazy" width="440" height="440">
+                  <img src="assets/images/free-electricity-2.png" alt="OVO app screens introducing free electricity — 'Get ready for free electricity' and 'Free electricity every week'." loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/free-electricity-3.png" alt="The free electricity dashboard showing upcoming weekly slots and adding one to a calendar." loading="lazy" width="440" height="440">
+                  <img src="assets/images/free-electricity-3.png" alt="The free electricity dashboard showing upcoming weekly slots and adding one to a calendar." loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/free-electricity-4.jpg" alt="A push notification: 'You've signed up for free electricity — pick your hours in the OVO app.'" loading="lazy" width="440" height="440">
+                  <img src="assets/images/free-electricity-4.jpg" alt="A push notification: 'You've signed up for free electricity — pick your hours in the OVO app.'" loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/free-electricity-5.png" alt="The free electricity screen with today's slot live — '1pm to 2pm'." loading="lazy" width="440" height="440">
+                  <img src="assets/images/free-electricity-5.png" alt="The free electricity screen with today's slot live — '1pm to 2pm'." loading="lazy" width="618" height="590">
                 </div>
               </div>
             </div>
             <div class="project__body">
               <div>
                 <p class="eyebrow">Project</p>
-                <h2 class="project__title">Free electricity</h2>
+                <h3 class="project__title">Free electricity</h3>
                 <p class="project__desc">Making an energy reward simple enough for anyone to use.</p>
               </div>
               <p class="project__role">Simplified a complex energy reward into a journey customers could understand and use.</p>
@@ -119,34 +122,34 @@
             <div class="carousel" role="group" aria-label="Loyalty programme — app screens" tabindex="0">
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/points-1.png" alt="A 'Start collecting points today' Beyond member card." loading="lazy" width="440" height="440">
+                  <img src="assets/images/points-1.png" alt="A 'Start collecting points today' Beyond member card." loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/points-2.png" alt="A 'How it works' card — earn points from weekly tasks, collect until 31 August, then get energy credit." loading="lazy" width="440" height="440">
+                  <img src="assets/images/points-2.png" alt="A 'How it works' card — earn points from weekly tasks, collect until 31 August, then get energy credit." loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/points-3.png" alt="OVO app points screens — the collect-points intro, dashboard, and energy-credit balance." loading="lazy" width="440" height="440">
+                  <img src="assets/images/points-3.png" alt="OVO app points screens — the collect-points intro, dashboard, and energy-credit balance." loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/points-4.png" alt="A Beyond member card: '£5 credit is all yours — thanks for being part of the trial.'" loading="lazy" width="440" height="440">
+                  <img src="assets/images/points-4.png" alt="A Beyond member card: '£5 credit is all yours — thanks for being part of the trial.'" loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/points-5.jpg" alt="A push notification: 'Collect up to £10 in credit — join our exclusive trial today to get rewarded.'" loading="lazy" width="440" height="440">
+                  <img src="assets/images/points-5.jpg" alt="A push notification: 'Collect up to £10 in credit — join our exclusive trial today to get rewarded.'" loading="lazy" width="618" height="590">
                 </div>
               </div>
             </div>
             <div class="project__body">
               <div>
                 <p class="eyebrow">Project</p>
-                <h2 class="project__title">Loyalty programme</h2>
+                <h3 class="project__title">Loyalty programme</h3>
                 <p class="project__desc">Designing a rewards system that keeps customers coming back.</p>
               </div>
               <p class="project__role">Designed a new points ecosystem that encourages repeat engagement through meaningful rewards.</p>
@@ -158,29 +161,29 @@
             <div class="carousel" role="group" aria-label="Filters — app screens" tabindex="0">
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/filters-1.png" alt="The filter component with each category selected in turn — All, Rewards, Energy, Electric vehicle, Solar, Heating, Partners." loading="lazy" width="440" height="440">
+                  <img src="assets/images/filters-1.png" alt="The filter component with each category selected in turn — All, Rewards, Energy, Electric vehicle, Solar, Heating, Partners." loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/filters-2.png" alt="The OVO Offers screen header with the redesigned category filter row." loading="lazy" width="440" height="440">
+                  <img src="assets/images/filters-2.png" alt="The OVO Offers screen header with the redesigned category filter row." loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/filters-3.png" alt="OVO Offers screens with the filters applied to the Summer Savings campaign." loading="lazy" width="440" height="440">
+                  <img src="assets/images/filters-3.png" alt="OVO Offers screens with the filters applied to the Summer Savings campaign." loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/filters-4.png" alt="An early hand-drawn sketch of the filter icons — All, Free, Energy, EV, Solar." loading="lazy" width="440" height="440">
+                  <img src="assets/images/filters-4.png" alt="An early hand-drawn sketch of the filter icons — All, Free, Energy, EV, Solar." loading="lazy" width="618" height="590">
                 </div>
               </div>
             </div>
             <div class="project__body">
               <div>
                 <p class="eyebrow">Project</p>
-                <h2 class="project__title">Filters</h2>
+                <h3 class="project__title">Filters</h3>
                 <p class="project__desc">Helping users find information quickly.</p>
               </div>
               <p class="project__role">Redesigned filtering to help customers find what they need faster while reducing cognitive load.</p>
@@ -191,43 +194,46 @@
           <article class="project">
             <div class="carousel" role="group" aria-label="Summer Savings — app screens" tabindex="0">
               <div class="carousel__slide">
-                <div class="carousel__frame">
-                  <img src="assets/images/summer-1.jpg" alt="Friends enjoying popcorn at the cinema." loading="lazy" width="440" height="440">
-                </div>
+                <a class="carousel__frame" href="case-studies/summer-savings.html">
+                  <img src="assets/images/summer-1.jpg" alt="Friends enjoying popcorn at the cinema." loading="lazy" width="618" height="590">
+                </a>
               </div>
               <div class="carousel__slide">
-                <div class="carousel__frame">
-                  <img src="assets/images/summer-2.png" alt="Campaign partner logos — Papa Johns, Costa Coffee and more." loading="lazy" width="440" height="440">
-                </div>
+                <a class="carousel__frame" href="case-studies/summer-savings.html">
+                  <img src="assets/images/summer-2.png" alt="Campaign partner logos — Papa Johns, Costa Coffee and more." loading="lazy" width="618" height="590">
+                </a>
               </div>
               <div class="carousel__slide">
-                <div class="carousel__frame">
-                  <img src="assets/images/summer-3.jpg" alt="Reward modals for a free Costa Coffee, a free cinema ticket, and a free Papa John's pizza." loading="lazy" width="440" height="440">
-                </div>
+                <a class="carousel__frame" href="case-studies/summer-savings.html">
+                  <img src="assets/images/summer-3.jpg" alt="Reward modals for a free Costa Coffee, a free cinema ticket, and a free Papa John's pizza." loading="lazy" width="618" height="590">
+                </a>
               </div>
               <div class="carousel__slide">
-                <div class="carousel__frame">
-                  <img src="assets/images/summer-4.jpg" alt="A push notification: 'This week's treat is here — claim your free pizza from OVO today.'" loading="lazy" width="440" height="440">
-                </div>
+                <a class="carousel__frame" href="case-studies/summer-savings.html">
+                  <img src="assets/images/summer-4.jpg" alt="A push notification: 'This week's treat is here — claim your free pizza from OVO today.'" loading="lazy" width="618" height="590">
+                </a>
               </div>
               <div class="carousel__slide">
-                <div class="carousel__frame">
-                  <img src="assets/images/summer-5.png" alt="Offer cards: 50% off Papa John's pizza (June only) and £5 off restaurants near you (all summer long)." loading="lazy" width="440" height="440">
-                </div>
+                <a class="carousel__frame" href="case-studies/summer-savings.html">
+                  <img src="assets/images/summer-5.png" alt="Offer cards: 50% off Papa John's pizza (June only) and £5 off restaurants near you (all summer long)." loading="lazy" width="618" height="590">
+                </a>
               </div>
               <div class="carousel__slide">
-                <div class="carousel__frame">
-                  <img src="assets/images/summer-6.png" alt="The reward claim form — full name, email, and unique code, with a 'Claim reward' button." loading="lazy" width="440" height="440">
-                </div>
+                <a class="carousel__frame" href="case-studies/summer-savings.html">
+                  <img src="assets/images/summer-6.png" alt="The reward claim form — full name, email, and unique code, with a 'Claim reward' button." loading="lazy" width="618" height="590">
+                </a>
               </div>
             </div>
             <div class="project__body">
               <div>
                 <p class="eyebrow">Project</p>
-                <h2 class="project__title">Summer Savings</h2>
+                <h3 class="project__title"><a class="project__link" href="case-studies/summer-savings.html">Summer Savings</a></h3>
                 <p class="project__desc">Driving engagement through the OVO app.</p>
               </div>
-              <p class="project__role">Created a seasonal rewards experience that drove weekly engagement through exclusive partner offers.</p>
+              <div>
+                <p class="project__role">Created a seasonal rewards experience that drove weekly engagement through exclusive partner offers.</p>
+                <a class="see-project" href="case-studies/summer-savings.html">See project →</a>
+              </div>
             </div>
           </article>
 
@@ -236,30 +242,49 @@
             <div class="carousel" role="group" aria-label="Energy Experts — app screens" tabindex="0">
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/energy-experts-1.png" alt="A 'Book an Energy Expert video call' screen explaining what's included." loading="lazy" width="440" height="440">
+                  <img src="assets/images/energy-experts-1.png" alt="A 'Book an Energy Expert video call' screen explaining what's included." loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/energy-experts-2.jpg" alt="An OVO Energy Expert standing beside a branded van." loading="lazy" width="440" height="440">
+                  <img src="assets/images/energy-experts-2.jpg" alt="An OVO Energy Expert standing beside a branded van." loading="lazy" width="618" height="590">
                 </div>
               </div>
               <div class="carousel__slide">
                 <div class="carousel__frame">
-                  <img src="assets/images/energy-experts-3.png" alt="A calendar and time-slot picker for booking a video appointment." loading="lazy" width="440" height="440">
+                  <img src="assets/images/energy-experts-3.png" alt="A calendar and time-slot picker for booking a video appointment." loading="lazy" width="618" height="590">
                 </div>
               </div>
             </div>
             <div class="project__body">
               <div>
                 <p class="eyebrow">Project</p>
-                <h2 class="project__title">Energy Experts</h2>
+                <h3 class="project__title">Energy Experts</h3>
                 <p class="project__desc">Helping customers book personalised energy advice in minutes.</p>
               </div>
               <p class="project__role">Designed a seamless booking journey that made expert energy advice accessible through video appointments.</p>
             </div>
           </article>
 
+        </div>
+      </div>
+    </section>
+
+    <!-- About me: heading left, copy right — same rhythm as the project rows,
+         no separate page. Linked from the nav via #about-me. -->
+    <section class="section--tight" id="about-me" aria-labelledby="about-me-heading">
+      <div class="container">
+        <div class="about__grid">
+          <div>
+            <h2 id="about-me-heading">About me</h2>
+          </div>
+          <div class="about__copy">
+            <p class="lede">I specialise in turning complex problems into simple experiences. My background in content design helps me create products that are easier to understand, easier to use and grounded in customer needs. I'm currently a designer at OVO Energy.</p>
+            <p>My career hasn't followed a conventional path.</p>
+            <p>Before transitioning into product and tech, I worked in marketing. While it's an unusual start for a designer, it taught me how to communicate effectively, adapt to diverse audiences, and wear many different hats.</p>
+            <p>For the past six years, I've designed digital products across energy, telecommunications, government, and retail. I'm a true generalist, and I like it that way — I'm just as comfortable mapping out complex user journeys as I am polishing high-fidelity UI.</p>
+            <p>I thrive in environments with clear goals, highly motivated collaborators, and enough momentum to ship great work regularly.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -281,11 +306,20 @@
           <p><a href="https://www.linkedin.com/">linkedin.com/in/olivia-sherwood</a></p>
         </div>
       </div>
-      <p class="footer__legal">© 2026 Olivia Sherwood</p>
+      <div class="footer__meta">
+        <p class="footer__legal">© 2026 Olivia Sherwood</p>
+        <!-- The label is fixed; the clock is the visitor's own local time.
+             role="timer" carries an implicit aria-live="off", so assistive tech
+             won't announce every tick. Empty until JS fills it, so with JS off
+             the line degrades to just "Leeds, UK". -->
+        <p class="footer__clock">Leeds, UK <span class="footer__time" role="timer"></span></p>
+      </div>
     </div>
   </footer>
 
   <script src="assets/js/carousel.js"></script>
   <script src="assets/js/theme.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/clock.js"></script>
 </body>
 </html>

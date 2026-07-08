@@ -32,15 +32,32 @@
   --size-body: 1rem;
   --size-label: 0.8125rem;
 
+  /* Fluid space — scales with the viewport, exactly as the type scale does.
+     The type was already fluid while these were fixed, so on a phone the gaps
+     stayed at desktop size while the text shrank, and everything drifted apart.
+
+     Each clamp interpolates between a 375px-wide phone and a 1280px desktop:
+       token    375px -> 1280px
+       sm         12  ->  16
+       md         16  ->  24
+       lg         24  ->  40
+       xl         32  ->  64      (tight sections)
+       2xl        40  -> 104      (major sections)
+     xs stays fixed — 8px is already the smallest useful step. */
   --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 1.5rem;
-  --space-lg: 2.5rem;
-  --space-xl: 4rem;
-  --space-2xl: 6.5rem;
+  --space-sm: clamp(0.75rem, 0.44vw + 0.65rem, 1rem);
+  --space-md: clamp(1rem,    0.88vw + 0.79rem, 1.5rem);
+  --space-lg: clamp(1.5rem,  1.77vw + 1.09rem, 2.5rem);
+  --space-xl: clamp(2rem,    3.54vw + 1.17rem, 4rem);
+  --space-2xl: clamp(2.5rem, 7.07vw + 0.84rem, 6.5rem);
 
   /* Comfortable reading width for running text, even when the surrounding
      layout stretches to full width on large screens. */
+  /* Drives both the duration and the visibility delay of the mobile nav, so
+     reduced-motion can zero the delay too — transition-duration: 0 alone would
+     still leave the panel visible for the length of the delay. */
+  --nav-anim: 0.3s;
+
   --measure: 38rem;
 
   /* Full-width layout: effectively edge-to-edge on normal monitors, with a
@@ -95,9 +112,11 @@
               border-color 0.3s ease, fill 0.3s ease;
 }
 /* keep the toggle knob's springy slide during the switch (the universal
-   .theme-transition rule would otherwise drop `left` from its transition) */
+   .theme-transition rule would otherwise drop transform/width from it) */
 .theme-transition .theme-toggle__knob {
-  transition: left 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 /* --------------------------------------------------------------------------
@@ -124,6 +143,7 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  :root { --nav-anim: 0s; }
   *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
@@ -207,7 +227,10 @@ h3 { font-size: var(--size-h3); }
 /* --------------------------------------------------------------------------
    6. Header / nav
    -------------------------------------------------------------------------- */
-.site-header { padding-block: var(--space-md); }
+.site-header {
+  padding-block: var(--space-md);
+  position: relative; /* anchors the mobile dropdown panel */
+}
 
 .site-header .container {
   display: flex;
@@ -221,10 +244,12 @@ h3 { font-size: var(--size-h3); }
   font-size: 1.125rem;
   letter-spacing: -0.02em;
   text-decoration: none;
+  white-space: nowrap; /* never let the name break across two lines */
 }
 
-/* Nav lays the links and the theme toggle in one row. */
-.site-nav { display: flex; align-items: center; gap: var(--space-md); }
+/* Links, theme toggle and hamburger sit in one row on the right. */
+.site-header__actions { display: flex; align-items: center; gap: var(--space-md); }
+
 .site-nav ul { display: flex; gap: var(--space-md); align-items: center; }
 
 .site-nav a {
@@ -238,101 +263,254 @@ h3 { font-size: var(--size-h3); }
 .site-nav a:hover,
 .site-nav a[aria-current="page"] { border-color: var(--ink); }
 
-/* "About" page is a later pass — shown for wayfinding but inert so it can't
-   404. Becomes a real link once that page exists. */
-.site-nav .is-upcoming {
-  color: var(--muted);
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: default;
+/* --- Hamburger -------------------------------------------------------------
+   Hidden on desktop. A single bar element draws the middle line; its ::before
+   and ::after draw the outer two. Open state rotates the outer bars into an X
+   and hides the middle one. */
+.nav-toggle {
+  display: none;
+  position: relative;
+  width: 44px;               /* full 44px tap target, no ::before needed */
+  height: 44px;
+  margin-right: -10px;       /* optically align the bars with the gutter */
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.nav-toggle__bar,
+.nav-toggle__bar::before,
+.nav-toggle__bar::after {
+  position: absolute;
+  left: 50%;
+  width: 22px;
+  height: 2px;
+  margin-left: -11px;
+  background: currentColor;
+  transition: transform var(--nav-anim) ease, top var(--nav-anim) ease,
+              background-color var(--nav-anim) ease;
+}
+.nav-toggle__bar { top: 50%; margin-top: -1px; }
+.nav-toggle__bar::before,
+.nav-toggle__bar::after { content: ""; left: 0; margin-left: 0; }
+.nav-toggle__bar::before { top: -7px; }
+.nav-toggle__bar::after  { top: 7px; }
+
+/* Open: middle bar goes transparent (kept in flow so the outer two can pivot
+   around its centre), outer bars slide in and cross. */
+[data-nav-open="true"] .nav-toggle__bar { background: transparent; }
+[data-nav-open="true"] .nav-toggle__bar::before { top: 0; transform: rotate(45deg); }
+[data-nav-open="true"] .nav-toggle__bar::after  { top: 0; transform: rotate(-45deg); }
+
+/* --- Mobile nav panel ------------------------------------------------------
+   Below 48rem the links drop out of the header row into a panel underneath it.
+   The open/close animation uses grid-template-rows 0fr→1fr so it works from
+   the content's real height without hardcoding one. `visibility` keeps the
+   links out of the tab order while closed, and its delay is driven by
+   --nav-anim so reduced-motion users get an instant, flash-free toggle. */
+@media (max-width: 47.99rem) {
+  .nav-toggle { display: block; }
+
+  .site-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    display: grid;
+    grid-template-rows: 0fr;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    opacity: 0;
+    visibility: hidden;
+    transition: grid-template-rows var(--nav-anim) ease,
+                opacity var(--nav-anim) ease,
+                visibility 0s var(--nav-anim);
+  }
+
+  .site-nav > ul {
+    display: block;
+    min-height: 0;   /* required for the 0fr row to actually collapse */
+    overflow: hidden;
+  }
+
+  .site-nav li { padding-inline: var(--gutter); }
+  .site-nav li:first-child { padding-top: var(--space-md); }
+  .site-nav li:last-child  { padding-bottom: var(--space-md); }
+
+  .site-nav a {
+    display: block;
+    padding-block: var(--space-sm);
+    font-size: 1.0625rem;
+    border-bottom: none;
+  }
+  /* underline reads as an odd half-width rule on a stacked list */
+  .site-nav a:hover,
+  .site-nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 4px; }
+
+  [data-nav-open="true"] .site-nav {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    visibility: visible;
+    transition: grid-template-rows var(--nav-anim) ease,
+                opacity var(--nav-anim) ease,
+                visibility 0s 0s;
+  }
 }
 
 /* --- Theme toggle switch ---------------------------------------------------
-   A pill switch with a sliding knob and sun/moon icons. It's a real <button
-   role="switch">, so it's keyboard-operable for free; the global
-   :focus-visible ring (in the current theme's ink) covers the focus state.
-   Everything is drawn from theme tokens, so it re-colours itself in dark mode. */
+   A 1:1 rebuild of the iOS native switch, in monochrome instead of green.
+   Geometry is in px, not rem, because these are exact device-pixel specs and
+   must not rescale with root font-size.
+
+     track 51 x 31, radius 15.5   knob 27, inset 2px all round
+     travel = 51 - 27 - 2 - 2 = 20px
+
+   It's a real <button role="switch">, so space/enter and focus come for free;
+   the global :focus-visible ring covers the focus state. */
 .theme-toggle {
   position: relative;
-  width: 3.25rem;              /* 52px track */
-  height: 1.875rem;           /* 30px */
+  width: 51px;
+  height: 31px;
   flex-shrink: 0;
   padding: 0;
   border: none;
-  border-radius: var(--radius-pill);
-  background: var(--line);      /* off: neutral fill */
+  border-radius: 15.5px;
+  background: #E9E9EA;          /* off: iOS's neutral grey fill */
   cursor: pointer;
-  transition: background-color 0.28s ease;
+  transition: background-color 0.3s ease;
 }
+.theme-toggle:focus-visible { outline-offset: 3px; }
 
-/* Comfortable ~46px touch target on mobile without enlarging the visual. */
+/* Comfortable ~47px touch target on mobile without enlarging the visual. */
 .theme-toggle::before {
   content: "";
   position: absolute;
-  inset: -0.5rem;
+  inset: -8px;
 }
 
 .theme-toggle__knob {
   position: absolute;
-  top: 0.1875rem;             /* 3px inset, centres a 24px thumb in a 30px track */
-  left: 0.1875rem;
-  width: 1.5rem;              /* 24px thumb */
-  height: 1.5rem;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
   border-radius: 50%;
-  background: #fff;            /* iOS-style white thumb; hairline + shadow so it
-                                 reads on every track colour, in both themes */
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-  /* quick, slightly springy slide, like the native control */
-  transition: left 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: #FFFFFF;
+  /* drop shadow for depth, a tight contact shadow, a hairline ring to hold the
+     edge against a white-ish track, and an inset top highlight so the knob
+     reads as softly embossed rather than flat */
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.15),
+    0 1px 1px rgba(0, 0, 0, 0.16),
+    0 0 0 0.5px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  /* springy slide with a touch of overshoot, like the native control.
+     transform (not `left`) so it's composited on the GPU and can't reflow. */
+  transition:
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* On (dark mode active): track fills with ink. Ink inverts to off-white in
-   dark mode, so the filled state stays visible on either background — the
-   monochrome stand-in for iOS's green. Knob slides right. */
-.theme-toggle[aria-checked="true"] {
-  background: var(--ink);
+/* On (= dark mode active): track fills near-black, knob slides its 20px. */
+.theme-toggle[aria-checked="true"] { background: #1A1A1A; }
+.theme-toggle[aria-checked="true"] .theme-toggle__knob { transform: translateX(20px); }
+
+/* The on state only ever coincides with dark mode, so a #1A1A1A track would
+   otherwise sit near-invisibly on the #151412 page. A hairline inset ring
+   restores the track's silhouette without changing its size or fill. */
+:root[data-theme="dark"] .theme-toggle[aria-checked="true"] {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
 }
-.theme-toggle[aria-checked="true"] .theme-toggle__knob {
-  left: calc(100% - 1.5rem - 0.1875rem);
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle[aria-checked="true"] {
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+  }
+}
+
+/* iOS polish: the knob elongates a few px in its direction of travel while
+   pressed, then settles. Off, it grows rightwards from its fixed left edge.
+   On, we hold the *right* edge at 49px and grow leftwards: 49 - 31 = 18px
+   left edge, i.e. 16px of translate from the 2px origin. */
+.theme-toggle:active .theme-toggle__knob { width: 31px; }
+.theme-toggle[aria-checked="true"]:active .theme-toggle__knob {
+  transform: translateX(16px);
 }
 
 /* --------------------------------------------------------------------------
-   7. Intro block — headline left, intro copy right at desktop width
+   7. Intro block — the name and tagline, full width
    -------------------------------------------------------------------------- */
-.intro__grid { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
+
+/* The intro container is a query container, so the headline can size itself
+   from the width it actually has rather than from the viewport. */
+.intro__container { container-type: inline-size; }
+
+/* Breathing room between the eyebrow and the display heading, and a cap so the
+   headline doesn't run edge-to-edge on wide screens. It stays left-aligned in
+   the normal container padding — the layout around it is still full-width.
+   Scoped to the intro so the case study <h1> keeps its own spacing.
+
+   font-size: the headline must never wrap past three lines. Sized from the
+   container rather than the viewport, because the container is what actually
+   constrains the text — a vw-based clamp drifts out of step at both ends and
+   overflows to 4+ lines on small phones. 8.61cqw is the largest coefficient
+   that holds three lines at every container width (7% headroom), and 4.25rem
+   (68px) caps the display size. Both are tuned to this exact 64-character
+   string; re-derive them if the copy changes. If cqw isn't supported the
+   declaration is dropped and the h1 falls back to --size-hero. */
+#intro-heading {
+  margin-top: var(--space-sm);
+  max-width: 56rem;
+  font-size: min(8.61cqw, 4.25rem);
+}
+
+/* Sub-copy under the headline: lighter and smaller, capped at a readable
+   measure while the layout around it stays full-width. */
+.intro__sub {
+  margin-top: var(--space-md);
+  font-size: var(--size-lede);
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--muted);
+  max-width: var(--measure);
+}
+
+/* Visible label for the project list. Styled as an eyebrow (it reuses
+   .eyebrow) but marked up as the section's real <h2>, so the heading order
+   runs h1 → h2 "Selected work" → h3 project titles. */
+.work__heading { margin-bottom: var(--space-lg); }
+
+/* --------------------------------------------------------------------------
+   7b. About me
+
+   Same rhythm as the project rows: heading in the left column, running copy in
+   the right, capped at the reading measure. No border, fill, or different type
+   — it should read as a continuation of the page, not a distinct block.
+   -------------------------------------------------------------------------- */
+#about-me {
+  /* Breathing room when the nav anchor jumps here. The header is static (it
+     scrolls away), so no fixed offset is required — but this also keeps the
+     heading clear of the nav should the header ever become sticky.
+     Smooth vs instant scrolling is handled by html{scroll-behavior} above,
+     which the prefers-reduced-motion block switches to `auto`. */
+  scroll-margin-top: var(--space-xl);
+}
+
+.about__grid { display: grid; grid-template-columns: 1fr; gap: var(--space-md); }
 
 @media (min-width: 60rem) {
-  .intro__grid {
-    grid-template-columns: 1.4fr 1fr;
+  .about__grid {
+    grid-template-columns: 1fr 1fr;
     gap: var(--space-2xl);
     align-items: start;
   }
 }
 
-/* Tagline is part of the <h1> semantically, but styled as a lighter, smaller
-   second line beneath the name rather than at full display size/weight. */
-.intro__tagline {
-  display: block;
-  margin-top: var(--space-md);
-  font-size: var(--size-lede);
-  font-weight: 400;
-  line-height: 1.4;
-  letter-spacing: 0;
-  color: var(--muted);
-  max-width: var(--measure);
-}
-
-.intro__copy > p + p { margin-top: var(--space-sm); }
-
-.intro__transition {
-  margin-top: var(--space-lg);
-  font-weight: 700;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: var(--size-label);
-}
+.about__copy { max-width: var(--measure); }
+.about__copy p + p { margin-top: var(--space-md); }
 
 /* --------------------------------------------------------------------------
    8. Project list — single-column stacked entries
@@ -358,6 +536,25 @@ h3 { font-size: var(--size-h3); }
 /* Project titles are h2 semantically (top-level blocks under the page h1),
    but keep this display size regardless of the base h2 scale. */
 .project__title { margin-top: 0.25rem; font-size: var(--size-h3); }
+
+/* Only projects with a case study page get linked; the rest stay plain text. */
+.project__link {
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  transition: border-color 0.15s ease;
+}
+.project__link:hover { border-color: var(--ink); }
+
+.see-project {
+  display: inline-block;
+  margin-top: var(--space-md);
+  font-weight: 600;
+  font-size: var(--size-small);
+  text-decoration: none;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 0.1rem;
+}
+.see-project:hover { color: var(--muted); border-color: var(--muted); }
 .project__desc { font-size: var(--size-lede); margin-top: var(--space-sm); }
 .project__role { color: var(--muted); margin-top: var(--space-sm); max-width: var(--measure); }
 
@@ -383,26 +580,143 @@ h3 { font-size: var(--size-h3); }
    they scale down to fit (staying square). carousel.js scrolls the row
    continuously and clones each project's images so the loop is seamless. */
 .carousel__slide {
-  flex: 0 0 440px;
-  max-width: 440px;
+  flex: 0 0 617.5px;
+  max-width: 617.5px;
 }
 
-@media (max-width: 30rem) {
+/* Below ~700px a 617.5px tile won't fit — scale it down proportionally so it
+   keeps the same 617.5 x 590 shape. */
+@media (max-width: 44rem) {
   .carousel__slide { flex-basis: 84vw; }
 }
 
-/* Square frame; the image fills it (object-fit: cover). The source images
-   are near-square, so this crops only a sliver. */
+/* 617.5 x 590 tile. The image fills it completely (object-fit: cover), so it
+   crops rather than letterboxes. The frame is an <a> for projects that have a
+   case study page, and a plain <div> for those that don't. */
 .carousel__frame {
-  aspect-ratio: 1 / 1;
+  display: block;
+  width: 100%;
+  aspect-ratio: 617.5 / 590;
   background: var(--panel);
-  border: 1px solid var(--line);
   overflow: hidden;
 }
-.carousel__frame img { width: 100%; height: 100%; object-fit: cover; }
+
+a.carousel__frame { text-decoration: none; }
+
+/* Subtle zoom-in on hover/focus. The frame clips the overflow, so the image
+   scales inside a fixed box rather than nudging the layout. */
+.carousel__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.25s ease;
+}
+.carousel__frame:hover img,
+.carousel__frame:focus-visible img { transform: scale(1.04); }
+
+/* Reduced motion: drop the zoom entirely rather than snapping to it instantly
+   (the global reduced-motion rule zeroes the transition duration). Links still
+   work exactly as before. */
+@media (prefers-reduced-motion: reduce) {
+  .carousel__frame:hover img,
+  .carousel__frame:focus-visible img { transform: none; }
+}
 
 /* Under reduced-motion the JS stops auto-advancing; the row stays a normal
    horizontal scroll area the user controls. */
+
+/* --------------------------------------------------------------------------
+   9b. Case study template
+
+   Reusable across case study pages: a title block, prose sections capped at a
+   readable measure, uncropped figures (full-width or a two-up grid), and an
+   impact block that gives the numbers real weight. Everything reads from the
+   same monochrome tokens as the homepage, so it themes automatically.
+   -------------------------------------------------------------------------- */
+.cs-back {
+  display: inline-block;
+  font-weight: 600;
+  font-size: var(--size-small);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 0.1rem;
+}
+.cs-back:hover { border-color: var(--ink); }
+
+.cs-title { margin-top: var(--space-md); }
+
+.cs-section { padding-block: var(--space-xl); }
+
+/* Running copy stays at a comfortable measure even though figures below can
+   stretch the full width of the page. */
+.cs-prose { max-width: var(--measure); }
+.cs-prose p { font-size: var(--size-lede); }
+.cs-prose p + p { margin-top: var(--space-md); }
+.cs-section h2 + .cs-prose { margin-top: var(--space-md); }
+
+/* Figures. Images are never cropped: they keep their natural aspect ratio and
+   the container sizes around them (height: auto). */
+.cs-figure { margin-top: var(--space-xl); }
+.cs-figure img {
+  width: 100%;
+  height: auto;
+  background: var(--panel);
+}
+.cs-figure figcaption {
+  margin-top: var(--space-sm);
+  font-size: var(--size-small);
+  color: var(--muted);
+  max-width: var(--measure);
+}
+
+/* Two-up grid for the squarer images; stacks on mobile. */
+.cs-figure-grid {
+  margin-top: var(--space-xl);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+@media (min-width: 48rem) {
+  .cs-figure-grid { grid-template-columns: 1fr 1fr; }
+}
+.cs-figure-grid .cs-figure { margin-top: 0; }
+
+/* Impact: large numerals, generous spacing. */
+.cs-stats {
+  margin-top: var(--space-xl);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  border-top: 1px solid var(--line);
+  padding-top: var(--space-xl);
+}
+@media (min-width: 48rem) {
+  .cs-stats { grid-template-columns: repeat(3, 1fr); gap: var(--space-2xl); }
+}
+
+.cs-stat__number {
+  display: block;
+  font-weight: 900;
+  font-size: clamp(2.75rem, 5vw + 1rem, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.cs-stat__label {
+  display: block;
+  margin-top: var(--space-sm);
+  color: var(--muted);
+  font-size: var(--size-lede);
+}
+
+/* The fourth impact point has no numeral — give it its own emphasis. */
+.cs-stats-note {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--line);
+  font-weight: 700;
+  font-size: clamp(1.25rem, 1.5vw + 1rem, 1.75rem);
+  max-width: var(--measure);
+}
 
 /* --------------------------------------------------------------------------
    10. Footer
@@ -426,8 +740,26 @@ h3 { font-size: var(--size-h3); }
 .footer__col a { text-decoration: none; border-bottom: 2px solid var(--ink); padding-bottom: 0.1rem; }
 .footer__col a:hover { color: var(--muted); border-color: var(--muted); }
 
-.footer__legal {
+/* Copyright left, local-time readout right. Wraps to two stacked lines on
+   narrow screens rather than letting the clock collide with the copyright. */
+.footer__meta {
   margin-top: var(--space-2xl);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-xs) var(--space-md);
+}
+
+.footer__legal,
+.footer__clock {
   color: var(--muted);
   font-size: var(--size-label);
+}
+
+/* Tabular figures give every digit the same advance width, so the milliseconds
+   can churn without the text jittering or nudging the copyright line. */
+.footer__time {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }

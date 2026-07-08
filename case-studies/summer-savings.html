@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summer Savings — Olivia Sherwood</title>
+  <meta name="description" content="Summer Savings: a seasonal rewards campaign encouraging OVO Beyond members to return to the app each week through exclusive partner offers.">
+
+  <!-- Apply the saved theme before first paint, so there's no flash of the
+       wrong mode on load. No stored choice = follow the OS. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "dark" || t === "light") {
+          document.documentElement.setAttribute("data-theme", t);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Header ---------------------------------------------------------------->
+  <header class="site-header" id="top">
+    <div class="container">
+      <a class="site-logo" href="../index.html">Olivia Sherwood</a>
+      <div class="site-header__actions">
+        <nav class="site-nav" id="primary-nav" aria-label="Primary">
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../index.html#about-me">About me</a></li>
+          </ul>
+        </nav>
+        <button type="button" class="theme-toggle" role="switch" aria-checked="false" aria-label="Switch to dark mode">
+          <span class="theme-toggle__knob" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- Title ---------------------------------------------------------------->
+    <section class="section--tight">
+      <div class="container">
+        <a class="cs-back" href="../index.html#work">← Back to work</a>
+        <p class="eyebrow" style="margin-top: var(--space-lg);">Case study</p>
+        <h1 class="cs-title">Summer Savings</h1>
+
+        <figure class="cs-figure">
+          <img src="../assets/images/summer-savings/journey-overview.jpg" alt="Three OVO app screens showing the Summer Savings journey: the home screen with a free Papa John's pizza reward, the reward detail modal, and the claim form." width="1800" height="850">
+        </figure>
+      </div>
+    </section>
+
+    <!-- Overview -------------------------------------------------------------->
+    <section class="cs-section" aria-labelledby="overview">
+      <div class="container">
+        <h2 id="overview">Overview</h2>
+        <div class="cs-prose">
+          <p>Summer Savings was a seasonal rewards campaign designed to encourage Beyond members to return to the OVO app each week through exclusive offers from brands including Papa Johns, Costa and Cineworld.</p>
+          <p>I helped design the end-to-end experience, from discovering rewards in the app through to redeeming them with third-party partners. Working closely with Product, Brand and Engineering, I created reusable design patterns that made the journey simple for customers and scalable for future campaigns.</p>
+        </div>
+
+        <div class="cs-figure-grid">
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/campaign-tile.jpg" alt="The Summer Savings campaign tile: a sun icon above the words 'Summer Savings are here!' and 'We're giving away treats to customers with Beyond'." loading="lazy" width="1800" height="1720">
+          </figure>
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/partner-logos.png" alt="Campaign partner logos: Papa Johns, National Dining Network, Cineworld and Costa Coffee." loading="lazy" width="1800" height="1720">
+          </figure>
+        </div>
+
+        <figure class="cs-figure">
+          <img src="../assets/images/summer-savings/rewards-list.png" alt="A rewards list card showing the four Summer Savings offers: free Papa John's pizza, £5 off eat in or takeaway, free Cineworld cinema ticket, and £4 Costa Coffee credit." loading="lazy" width="1800" height="850">
+        </figure>
+
+        <div class="cs-figure-grid">
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/offer-cards.jpg" alt="Two Beyond offer cards: '50% off Papa John's pizza, June only' and '£5 off restaurants near you, all summer long'." loading="lazy" width="1800" height="1720">
+          </figure>
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/push-notification.jpg" alt="A push notification reading 'This week's treat is here — claim your free pizza from OVO today.'" loading="lazy" width="1800" height="1720">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- The challenge --------------------------------------------------------->
+    <section class="cs-section" aria-labelledby="challenge">
+      <div class="container">
+        <h2 id="challenge">The challenge</h2>
+        <div class="cs-prose">
+          <p>Customers needed to move between the OVO app and partner websites to claim rewards. Each partner had different requirements, making the experience feel fragmented and inconsistent.</p>
+          <p>The challenge was to create a seamless journey that customers could understand quickly while supporting multiple partners and new offers every week.</p>
+        </div>
+
+        <figure class="cs-figure">
+          <img src="../assets/images/summer-savings/partner-landing-page.jpg" alt="A laptop showing the partner-hosted Summer Savings landing page: 'Say hello to Summer Savings — we're giving away 10,000 free small pizzas this June.'" loading="lazy" width="1800" height="850">
+          <figcaption>Rewards were claimed on partner-hosted pages outside the OVO app.</figcaption>
+        </figure>
+
+        <figure class="cs-figure">
+          <img src="../assets/images/summer-savings/offer-card-detail.jpg" alt="A close-up of the offers carousel showing a Papa Johns card reading 'Enjoy 1 free pizza, on us' with a 'More coming Monday' banner." loading="lazy" width="1800" height="850">
+          <figcaption>New offers landed every week, so the pattern had to hold up as content changed.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Design process --------------------------------------------------------->
+    <section class="cs-section" aria-labelledby="process">
+      <div class="container">
+        <h2 id="process">Design process</h2>
+        <div class="cs-prose">
+          <p>I mapped the end-to-end journey to identify opportunities to reduce friction and improve consistency.</p>
+          <p>Rather than designing each reward individually, I created reusable patterns for reward pages, redemption flows and supporting content. This gave customers a familiar experience every time they claimed an offer while helping the team deliver new campaigns more efficiently.</p>
+          <p>I also redesigned the third-party redemption experience, simplifying the language, improving guidance and creating a more consistent experience beyond the OVO app.</p>
+        </div>
+
+        <figure class="cs-figure">
+          <img src="../assets/images/summer-savings/journey-sketch.png" alt="A hand-drawn wireframe sketch mapping the journey across three screens: home screen, offers, and the reward modal." loading="lazy" width="1500" height="708">
+          <figcaption>Mapping the end-to-end journey, from home screen to offers to reward modal.</figcaption>
+        </figure>
+
+        <figure class="cs-figure">
+          <img src="../assets/images/summer-savings/reward-modals.jpg" alt="Three reward modals following the same pattern: claim £5 off restaurants, grab a free Papa John's pizza, and enjoy a free Costa Coffee — each with a summary, how-to-claim steps, a unique code and a claim button." loading="lazy" width="1800" height="850">
+          <figcaption>One reusable reward pattern: summary, how to claim, unique code, terms, and a single call to action.</figcaption>
+        </figure>
+
+        <div class="cs-figure-grid">
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/reward-modal-cineworld.jpg" alt="The Cineworld reward modal in the OVO app: 'Up to 40% off Cineworld', with how-to-claim steps and a claim reward button." loading="lazy" width="1800" height="1720">
+          </figure>
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/reward-modal-papa-johns.jpg" alt="The Papa John's reward modal in the OVO app: 'Up 50% off Papa John's pizza', following the same layout as the Cineworld modal." loading="lazy" width="1800" height="1720">
+          </figure>
+        </div>
+
+        <figure class="cs-figure">
+          <img src="../assets/images/summer-savings/claim-form-states.png" alt="The redesigned claim form shown twice: the default state, and an error state with helpful guidance under each field such as 'You'll find this in the OVO app'." loading="lazy" width="1800" height="850">
+          <figcaption>The redesigned claim form, with clearer guidance and human error messages.</figcaption>
+        </figure>
+
+        <div class="cs-figure-grid">
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/claim-forms.jpg" alt="Three partner claim pages — Cineworld, restaurants and Papa John's — all sharing the same layout, heading style and form fields." loading="lazy" width="1800" height="1720">
+          </figure>
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/reward-confirmation.jpg" alt="A confirmation message reading 'Your reward's on its way — check your inbox for the voucher', next to a mail app icon." loading="lazy" width="1800" height="1720">
+          </figure>
+        </div>
+
+        <div class="cs-figure-grid">
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/acquisition-papa-johns.jpg" alt="Acquisition screens for customers without Beyond: a card reading 'Enjoy a free pizza from Papa John's, only with Beyond' and a 'Get rewards with Beyond' unlock screen." loading="lazy" width="1800" height="850">
+          </figure>
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/acquisition-costa.jpg" alt="The same acquisition pattern applied to Costa Coffee: 'Enjoy a free drink from Costa Coffee, only with Beyond' and the matching 'Get rewards with Beyond' unlock screen." loading="lazy" width="1800" height="850">
+          </figure>
+        </div>
+        <p class="cs-prose" style="margin-top: var(--space-md); color: var(--muted); font-size: var(--size-small);">The same pattern, applied across partners.</p>
+      </div>
+    </section>
+
+    <!-- Impact ----------------------------------------------------------------->
+    <section class="cs-section" aria-labelledby="impact">
+      <div class="container">
+        <h2 id="impact">Impact</h2>
+        <div class="cs-prose">
+          <p>The campaign generated strong engagement despite receiving no promotion during its first 10 days.</p>
+        </div>
+
+        <div class="cs-stats">
+          <div class="cs-stat">
+            <span class="cs-stat__number">12,000+</span>
+            <span class="cs-stat__label">customers engaged organically</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat__number">4,000</span>
+            <span class="cs-stat__label">free pizzas claimed in 21 hours</span>
+          </div>
+          <div class="cs-stat">
+            <span class="cs-stat__number">7,500</span>
+            <span class="cs-stat__label">restaurant vouchers redeemed</span>
+          </div>
+        </div>
+
+        <p class="cs-stats-note">Weekly offers regularly sold out within days</p>
+      </div>
+    </section>
+
+    <!-- Key takeaways ---------------------------------------------------------->
+    <section class="cs-section" aria-labelledby="takeaways">
+      <div class="container">
+        <h2 id="takeaways">Key takeaways</h2>
+        <div class="cs-prose">
+          <p>This project reinforced the value of designing systems, not just individual screens. By creating reusable patterns and collaborating across teams, we delivered an experience that was easier for customers to use and quicker for the business to scale.</p>
+        </div>
+
+        <div class="cs-figure-grid">
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/cinema-lifestyle.jpg" alt="Friends laughing together at the cinema, holding buckets of popcorn." loading="lazy" width="1800" height="1720">
+          </figure>
+          <figure class="cs-figure">
+            <img src="../assets/images/summer-savings/pizza-lifestyle.jpg" alt="Friends around a table at home, sharing pizza and playing cards." loading="lazy" width="1800" height="1720">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer ---------------------------------------------------------------->
+  <footer class="site-footer section--tight" id="contact">
+    <div class="container">
+      <h2 class="footer__heading">Get in touch</h2>
+      <p class="footer__intro">I'm always happy to chat about product design, UX and new opportunities.</p>
+      <div class="footer__grid">
+        <div class="footer__col">
+          <p class="eyebrow">Email</p>
+          <p><a href="mailto:oliviaellensherwood@gmail.com">oliviaellensherwood@gmail.com</a></p>
+        </div>
+        <div class="footer__col">
+          <p class="eyebrow">LinkedIn</p>
+          <p><a href="https://www.linkedin.com/">linkedin.com/in/olivia-sherwood</a></p>
+        </div>
+      </div>
+      <div class="footer__meta">
+        <p class="footer__legal">© 2026 Olivia Sherwood</p>
+        <p class="footer__clock">Leeds, UK <span class="footer__time" role="timer"></span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/clock.js"></script>
+</body>
+</html>
