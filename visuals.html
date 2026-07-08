@@ -130,6 +130,12 @@
           </li>
 
         </ul>
+
+        <!-- Runs here, not deferred: the shuffle has to happen while the parser
+             is still working, before first paint and before the browser decides
+             which images are lazy. Deferring it would paint the fixed order
+             first, then visibly reorder. -->
+        <script src="assets/js/visuals.js"></script>
       </div>
     </section>
 
