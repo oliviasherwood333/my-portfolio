@@ -15,6 +15,11 @@
    1. Design tokens — black / white / grey only
    -------------------------------------------------------------------------- */
 :root {
+  /* Tells the browser which canvas to paint before our CSS applies. Without it
+     the gap between documents flashes white, which no page transition can hide
+     because it happens outside the page. Also themes scrollbars and form UI. */
+  color-scheme: light;
+
   --bg: #FAFAFA;          /* page background, warm-neutral off-white */
   --ink: #111111;         /* headlines + body text */
   --muted: #6B6B6B;       /* secondary text */
@@ -83,6 +88,7 @@
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --bg: #151412;
     --ink: #F1EEE8;
     --muted: #A29E96;
@@ -92,6 +98,7 @@
 }
 
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --bg: #151412;
   --ink: #F1EEE8;
   --muted: #A29E96;
@@ -117,6 +124,50 @@
   transition:
     transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
     width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* --------------------------------------------------------------------------
+   1c. Cross-document page transitions
+
+   This is the multi-page View Transitions API, not document.startViewTransition().
+   That function is the *same-document* API: it snapshots, runs a callback that
+   mutates the DOM, then animates. A real navigation destroys the old document,
+   so wrapping location.href in it does nothing. For an MPA the opt-in is this
+   at-rule, declared on both the outgoing and incoming page (both load this
+   stylesheet, so that's satisfied). Same-origin only, per spec — external links
+   never transition.
+
+   No JS. Browsers without support ignore the at-rule and navigate normally.
+   -------------------------------------------------------------------------- */
+@view-transition { navigation: auto; }
+
+/* A crossfade is the default; these add a barely-there scale so the pages feel
+   like they move through each other rather than dissolve. Asymmetric timing —
+   the outgoing page leaves a little faster than the incoming one arrives, which
+   reads as forward motion instead of a dip to blank. */
+::view-transition-old(root) {
+  animation: vt-out 300ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+::view-transition-new(root) {
+  animation: vt-in 380ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes vt-out {
+  to { opacity: 0; transform: scale(0.995); }
+}
+@keyframes vt-in {
+  from { opacity: 0; transform: scale(1.005); }
+}
+
+/* The global reduced-motion rule below uses `*`, which cannot match the
+   view-transition pseudo-element tree — it lives outside the document. So the
+   animations have to be killed explicitly. Navigation still happens, instantly. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
