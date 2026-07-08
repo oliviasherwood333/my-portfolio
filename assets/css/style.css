@@ -400,14 +400,10 @@ h3 { font-size: var(--size-h3); }
   height: 27px;
   border-radius: 50%;
   background: #FFFFFF;
-  /* drop shadow for depth, a tight contact shadow, a hairline ring to hold the
-     edge against a white-ish track, and an inset top highlight so the knob
-     reads as softly embossed rather than flat */
-  box-shadow:
-    0 3px 8px rgba(0, 0, 0, 0.15),
-    0 1px 1px rgba(0, 0, 0, 0.16),
-    0 0 0 0.5px rgba(0, 0, 0, 0.04),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  /* A single soft drop shadow, as iOS uses. Nothing with spread: a spread ring
+     paints outside the 27px box and makes the knob read ~28px against a 31px
+     track, which is what reads as "chunky" even when the geometry is exact. */
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
   /* springy slide with a touch of overshoot, like the native control.
      transform (not `left`) so it's composited on the GPU and can't reflow. */
   transition:
@@ -554,9 +550,13 @@ h3 { font-size: var(--size-h3); }
   border-bottom: 2px solid var(--ink);
   padding-bottom: 0.1rem;
 }
+/* The margin only separates the link from a role line above it. With no role
+   line, the link is first in its column and must sit flush with the eyebrow
+   opposite, not 24px below it. */
+.see-project:first-child { margin-top: 0; }
+
 .see-project:hover { color: var(--muted); border-color: var(--muted); }
 .project__desc { font-size: var(--size-lede); margin-top: var(--space-sm); }
-.project__role { color: var(--muted); margin-top: var(--space-sm); max-width: var(--measure); }
 
 /* --------------------------------------------------------------------------
    9. Carousel — ambient, auto-advancing, images shown uncropped
@@ -723,17 +723,16 @@ a.carousel__frame { text-decoration: none; }
    -------------------------------------------------------------------------- */
 .site-footer { border-top: 1px solid var(--line); }
 
-.footer__heading { margin-bottom: var(--space-xs); }
-.footer__intro {
-  font-size: var(--size-lede);
-  max-width: var(--measure);
-  margin-bottom: var(--space-lg);
-}
+/* Carries the gap the intro paragraph used to provide, now that the heading
+   sits directly above the contact grid. */
+.footer__heading { margin-bottom: var(--space-lg); }
 
-.footer__grid { display: grid; grid-template-columns: 1fr; gap: var(--space-lg); }
-
-@media (min-width: 40rem) {
-  .footer__grid { grid-template-columns: repeat(2, minmax(0, 20rem)); }
+/* auto-fit rather than a fixed column count: one contact column today, and it
+   lays out sensibly if another is ever added back. */
+.footer__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 20rem));
+  gap: var(--space-lg);
 }
 
 .footer__col p { margin-top: var(--space-xs); font-size: var(--size-lede); }
