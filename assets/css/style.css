@@ -138,25 +138,61 @@
    never transition.
 
    No JS. Browsers without support ignore the at-rule and navigate normally.
+
+   Scroll position needs no JS either: a fresh navigation already lands at the
+   top, and history.scrollRestoration stays "auto" so the back button restores
+   where you were. Forcing it to "manual" would break that.
    -------------------------------------------------------------------------- */
 @view-transition { navigation: auto; }
 
-/* A crossfade is the default; these add a barely-there scale so the pages feel
-   like they move through each other rather than dissolve. Asymmetric timing —
-   the outgoing page leaves a little faster than the incoming one arrives, which
-   reads as forward motion instead of a dip to blank. */
-::view-transition-old(root) {
-  animation: vt-out 300ms cubic-bezier(0.4, 0, 0.2, 1) both;
-}
-::view-transition-new(root) {
-  animation: vt-in 380ms cubic-bezier(0.4, 0, 0.2, 1) both;
+/* Pull the header out of the root snapshot and give it its own. Without this
+   the header is part of `root`, so it dissolves into a pixel-identical copy of
+   itself — which is what makes a whole-page crossfade read as flat. Named, it
+   holds still while the content moves beneath it: the header is furniture,
+   not content.
+
+   Only the header. Two deliberate omissions:
+
+   `main` stays inside `root`. A named group tweens between its old and new
+   geometry, and main's height differs enormously between the homepage and the
+   visuals mosaic, so a named main would visibly squash. `root` is always sized
+   to the viewport, so it can slide without distorting.
+
+   The footer stays inside `root` too, for the same reason in reverse: it sits
+   at a different y on every page, so naming it would make the group slide the
+   footer across the viewport whenever you navigate from a scrolled-down
+   position. The header is at y=0 everywhere, so its group tween is a no-op. */
+.site-header { view-transition-name: site-header; }
+
+/* Chrome: a short opacity-only crossfade, no movement. Long enough to soften
+   the nav's aria-current underline moving between pages, short enough that the
+   header reads as stationary. */
+::view-transition-old(site-header),
+::view-transition-new(site-header) {
+  animation-duration: 180ms;
+  animation-timing-function: ease;
 }
 
-@keyframes vt-out {
-  to { opacity: 0; transform: scale(0.995); }
+/* Content: the outgoing page lifts and fades away quickly; the incoming page
+   rises into place slowly on a decelerating curve, after a short beat. The
+   overlap plus the asymmetry is what reads as editorial rather than as a
+   dissolve — it moves in one direction instead of dipping through blank.
+
+   Only opacity and transform, so both run entirely on the compositor. No
+   layout, no paint, no main-thread work — this is why it stays smooth on a
+   phone with 18 images on screen. */
+::view-transition-old(root) {
+  animation: vt-content-out 220ms cubic-bezier(0.3, 0, 0.8, 0.15) both;
 }
-@keyframes vt-in {
-  from { opacity: 0; transform: scale(1.005); }
+::view-transition-new(root) {
+  animation: vt-content-in 460ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+}
+
+@keyframes vt-content-out {
+  to { opacity: 0; transform: translateY(-12px); }
+}
+@keyframes vt-content-in {
+  from { opacity: 0; transform: translateY(20px); }
 }
 
 /* The global reduced-motion rule below uses `*`, which cannot match the
