@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visuals — Olivia Sherwood</title>
+  <meta name="description" content="A visual gallery of product design work by Olivia Sherwood — app screens, notifications and interface details from OVO Energy.">
+
+  <!-- Apply the saved theme before first paint, so there's no flash of the
+       wrong mode on load. No stored choice = follow the OS. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "dark" || t === "light") {
+          document.documentElement.setAttribute("data-theme", t);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Header ---------------------------------------------------------------->
+  <header class="site-header" id="top">
+    <div class="container">
+      <a class="site-logo" href="index.html">Olivia Sherwood</a>
+      <div class="site-header__actions">
+        <nav class="site-nav" id="primary-nav" aria-label="Primary">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="visuals.html" aria-current="page">Visuals</a></li>
+            <li><a href="index.html#about-me">About me</a></li>
+          </ul>
+        </nav>
+        <button type="button" class="theme-toggle" role="switch" aria-checked="false" aria-label="Switch to dark mode">
+          <span class="theme-toggle__knob" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- Bento mosaic ---------------------------------------------------------
+         The page is deliberately visual-only, so the h1 is hidden rather than
+         omitted — the document still needs a top-level heading.
+
+         Tile order is load-bearing: it's arranged so a 4-column grid packs
+         with no holes under normal (sparse) auto-placement.
+         L = large 2x2, W = wide 2x1, S = small 1x1. -->
+    <section class="section--tight">
+      <div class="container visuals">
+        <h1 class="visually-hidden">Visuals</h1>
+
+        <ul class="visuals__grid">
+
+          <!-- rows 1-2 -->
+          <li class="visuals__tile visuals__tile--l">
+            <img src="assets/images/visuals/welcome-email.jpg" alt="A welcome email headed 'Get ready for free electricity', with a photo of a smiling customer and a link to pick your hours in the OVO app." width="1600" height="1528" fetchpriority="high">
+          </li>
+          <li class="visuals__tile visuals__tile--s">
+            <img src="assets/images/visuals/all-set-modal.jpg" alt="A confirmation modal: 'You're all set — you'll get up to 1kWh of free electricity per hour.'" width="900" height="860" fetchpriority="high">
+          </li>
+          <li class="visuals__tile visuals__tile--s">
+            <img src="assets/images/visuals/pick-hours-prompt.jpg" alt="A prompt card reading 'Pick your 2 free hours before midnight on Sunday', with a 'Choose hours' button." width="900" height="860" fetchpriority="high">
+          </li>
+          <li class="visuals__tile visuals__tile--w">
+            <img src="assets/images/visuals/intro-screens.jpg" alt="Three app screens introducing free electricity: a welcome message, 'Free electricity every week', and a savings summary." width="1800" height="849" fetchpriority="high">
+          </li>
+
+          <!-- rows 3-4 -->
+          <li class="visuals__tile visuals__tile--l">
+            <img src="assets/images/visuals/app-home-balance.jpg" alt="The OVO app home screen showing a £185 balance, month-to-date usage, and a 'Your free electricity' rewards card." width="1600" height="1528" loading="lazy">
+          </li>
+          <li class="visuals__tile visuals__tile--w">
+            <img src="assets/images/visuals/onboarding-carousel.jpg" alt="Three onboarding screens — 'Conquer the power hungry', 'Pick your free hours' and 'Power up, your way'." width="1800" height="849" loading="lazy">
+          </li>
+          <li class="visuals__tile visuals__tile--w">
+            <img src="assets/images/visuals/slot-picker-screens.jpg" alt="Three screens of the 'Choose your 2 free hours' slot picker, showing day-by-day time selection." width="1800" height="849" loading="lazy">
+          </li>
+
+          <!-- rows 5-6 -->
+          <li class="visuals__tile visuals__tile--l">
+            <img src="assets/images/visuals/how-it-works.jpg" alt="A 'How it works' card explaining three steps: choose weekly, switch on and save, and see your savings." width="1600" height="1528" loading="lazy">
+          </li>
+          <li class="visuals__tile visuals__tile--w">
+            <img src="assets/images/visuals/live-slot-screens.jpg" alt="Four screens of the free electricity dashboard, showing a live slot highlighted from 1pm to 2pm." width="1800" height="849" loading="lazy">
+          </li>
+          <li class="visuals__tile visuals__tile--w">
+            <img src="assets/images/visuals/opt-in-screens.jpg" alt="Three opt-in screens with consent checkboxes, ending in a 'You're all set!' confirmation." width="1800" height="849" loading="lazy">
+          </li>
+
+          <!-- rows 7-8 -->
+          <li class="visuals__tile visuals__tile--l">
+            <img src="assets/images/visuals/free-power-hour-notification.jpg" alt="A lock screen notification: 'It's free power hour day — enjoy your free electricity from 1pm to 2pm.'" width="1600" height="1528" loading="lazy">
+          </li>
+          <li class="visuals__tile visuals__tile--w">
+            <img src="assets/images/visuals/faqs.jpg" alt="An expanded FAQs panel answering questions about free electricity hours and how to choose them." width="1800" height="849" loading="lazy">
+          </li>
+          <li class="visuals__tile visuals__tile--s">
+            <img src="assets/images/visuals/live-slot-dashboard.jpg" alt="The free electricity dashboard with a live slot card reading '1pm to 2pm' above a list of upcoming slots." width="900" height="860" loading="lazy">
+          </li>
+          <li class="visuals__tile visuals__tile--s">
+            <img src="assets/images/visuals/confirm-slots-modal.jpg" alt="A 'Ready to confirm?' modal listing two chosen time slots, warning they can't be changed later." width="900" height="860" loading="lazy">
+          </li>
+
+          <!-- row 9 -->
+          <li class="visuals__tile visuals__tile--s">
+            <img src="assets/images/visuals/add-to-calendar.jpg" alt="Adding '1 hour of free electricity' to a phone calendar as a saved event." width="900" height="860" loading="lazy">
+          </li>
+          <li class="visuals__tile visuals__tile--s">
+            <img src="assets/images/visuals/what-is-kwh-modal.jpg" alt="A 'What's 1kWh?' explainer modal comparing a kilowatt hour to running a dishwasher, oven or iron." width="900" height="860" loading="lazy">
+          </li>
+          <li class="visuals__tile visuals__tile--s">
+            <img src="assets/images/visuals/nothing-to-do-card.jpg" alt="A quiet-state card reading 'Nothing to do for now — pick your hours from 28 March.'" width="900" height="860" loading="lazy">
+          </li>
+          <li class="visuals__tile visuals__tile--s">
+            <img src="assets/images/visuals/signup-notification.jpg" alt="A lock screen notification: 'You've signed up for free electricity — pick your hours in the OVO app.'" width="900" height="860" loading="lazy">
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer ---------------------------------------------------------------->
+  <footer class="site-footer section--tight" id="contact">
+    <div class="container">
+      <h2 class="footer__heading">Get in touch</h2>
+      <div class="footer__grid">
+        <div class="footer__col">
+          <p class="eyebrow">Email</p>
+          <p><a href="mailto:oliviaellensherwood@gmail.com">oliviaellensherwood@gmail.com</a></p>
+        </div>
+      </div>
+      <div class="footer__meta">
+        <p class="footer__legal">© 2026 Olivia Sherwood</p>
+        <p class="footer__clock">Leeds, UK <span class="footer__time" role="timer"></span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/clock.js"></script>
+</body>
+</html>
