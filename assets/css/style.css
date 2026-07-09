@@ -26,6 +26,13 @@
   --line: #E5E5E5;        /* dividers / borders */
   --panel: #F0F0F0;       /* carousel frame backdrop, subtle fills */
   --white: #FFFFFF;
+  /* Translucent header fill, used only where backdrop-blur is supported;
+     elsewhere the header falls back to solid --bg. Same colour as --bg. */
+  --header-bg: rgba(250, 250, 250, 0.82);
+
+  /* The toggle (31px) is the tallest thing in the bar, so header height is its
+     two paddings plus that. Drives the sticky nav's anchor offset. */
+  --header-height: calc(2 * var(--space-md) + 31px);
 
   --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
@@ -94,6 +101,7 @@
     --muted: #A29E96;
     --line: #454239;
     --panel: #201E1A;
+    --header-bg: rgba(21, 20, 18, 0.82);
   }
 }
 
@@ -104,6 +112,7 @@
   --muted: #A29E96;
   --line: #454239;
   --panel: #201E1A;
+  --header-bg: rgba(21, 20, 18, 0.82);
 }
 
 /* Smooth, subtle cross-fade while switching theme. Applied via a class that
@@ -211,7 +220,14 @@
    -------------------------------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* Every in-page anchor lands below the sticky header instead of behind it.
+     One rule covers #about-me, #work, the skip link — every target — so no
+     per-section scroll-margin is needed. The extra --space-sm is breathing room. */
+  scroll-padding-top: calc(var(--header-height) + var(--space-sm));
+}
 
 body {
   margin: 0;
@@ -259,7 +275,7 @@ a { color: inherit; }
   color: var(--bg);
   padding: var(--space-xs) var(--space-sm);
   border-radius: 6px;
-  z-index: 100;
+  z-index: 200;              /* above the sticky header (100), or it'd hide behind it when focused */
   text-decoration: none;
   transition: top 0.15s ease;
 }
@@ -316,7 +332,20 @@ h3 { font-size: var(--size-h3); }
    -------------------------------------------------------------------------- */
 .site-header {
   padding-block: var(--space-md);
-  position: relative; /* anchors the mobile dropdown panel */
+  position: sticky;
+  top: 0;
+  z-index: 100;              /* above hero images, the mosaic grid, everything */
+  background: var(--bg);     /* solid fallback: opaque so content can't show through */
+}
+
+/* Only where backdrop-blur actually works do we go translucent — otherwise the
+   solid --bg above stands, rather than a see-through header with no blur. */
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .site-header {
+    background: var(--header-bg);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
 }
 
 .site-header .container {
@@ -332,6 +361,21 @@ h3 { font-size: var(--size-h3); }
   letter-spacing: -0.02em;
   text-decoration: none;
   white-space: nowrap; /* never let the name break across two lines */
+}
+
+/* Header clock slot (JS moves the single .footer__clock here on wide screens).
+   margin-right: auto keeps it and the logo grouped on the left while the nav
+   actions stay pushed to the right. Nav font family and size, but regular
+   weight and muted colour so it reads as ambient detail, not the name. */
+.site-header__clock {
+  display: flex;
+  align-items: center;
+  margin-inline: var(--space-md) auto;
+}
+.site-header__clock .footer__clock {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--muted);
 }
 
 /* Links, theme toggle and hamburger sit in one row on the right. */
@@ -399,6 +443,10 @@ h3 { font-size: var(--size-h3); }
    --nav-anim so reduced-motion users get an instant, flash-free toggle. */
 @media (max-width: 47.99rem) {
   .nav-toggle { display: block; }
+
+  /* The hamburger's 44px tap target is taller than the 31px toggle here, so it,
+     not the toggle, sets the header height. Keep the anchor offset in step. */
+  :root { --header-height: calc(2 * var(--space-md) + 44px); }
 
   .site-nav {
     position: absolute;
@@ -530,27 +578,20 @@ h3 { font-size: var(--size-h3); }
    7. Intro block — the name and tagline, full width
    -------------------------------------------------------------------------- */
 
-/* The intro container is a query container, so the headline can size itself
-   from the width it actually has rather than from the viewport. */
-.intro__container { container-type: inline-size; }
-
 /* Breathing room between the eyebrow and the display heading, and a cap so the
    headline doesn't run edge-to-edge on wide screens. It stays left-aligned in
-   the normal container padding — the layout around it is still full-width.
-   Scoped to the intro so the case study <h1> keeps its own spacing.
+   the normal container padding. Scoped to the intro so the case study <h1>
+   keeps its own spacing.
 
-   font-size: the headline must never wrap past three lines. Sized from the
-   container rather than the viewport, because the container is what actually
-   constrains the text — a vw-based clamp drifts out of step at both ends and
-   overflows to 4+ lines on small phones. 8.61cqw is the largest coefficient
-   that holds three lines at every container width (7% headroom), and 4.25rem
-   (68px) caps the display size. Both are tuned to this exact 64-character
-   string; re-derive them if the copy changes. If cqw isn't supported the
-   declaration is dropped and the h1 falls back to --size-hero. */
+   Fluid size via clamp: smaller footprint than before (54px cap, was 68px) so
+   the first project peeks above the fold, but still 900-weight with the tight
+   -0.02em tracking inherited from the base h1 rule, so it reads as a display
+   headline, not shrunk body text. The 48rem measure lets the desktop size
+   break to two lines instead of three, cutting the hero's height further. */
 #intro-heading {
   margin-top: var(--space-sm);
-  max-width: 56rem;
-  font-size: min(8.61cqw, 4.25rem);
+  max-width: 48rem;
+  font-size: clamp(1.75rem, 4.2vw, 3.375rem);
 }
 
 /* Sub-copy under the headline: lighter and smaller, capped at a readable
@@ -564,10 +605,18 @@ h3 { font-size: var(--size-h3); }
   max-width: var(--measure);
 }
 
+/* Trim the hero's vertical footprint (its own padding is lighter than the
+   default section--tight) so the top of the first project clears the fold on
+   short laptops. The sticky header already separates it from the top, so it
+   needs little padding above. */
+.section--tight[aria-labelledby="intro-heading"] {
+  padding-block: var(--space-md) var(--space-md);
+}
+
 /* Visible label for the project list. Styled as an eyebrow (it reuses
    .eyebrow) but marked up as the section's real <h2>, so the heading order
    runs h1 → h2 "Selected work" → h3 project titles. */
-.work__heading { margin-bottom: var(--space-lg); }
+.work__heading { margin-bottom: var(--space-md); }
 
 /* --------------------------------------------------------------------------
    7b. About me
@@ -576,15 +625,8 @@ h3 { font-size: var(--size-h3); }
    the right, capped at the reading measure. No border, fill, or different type
    — it should read as a continuation of the page, not a distinct block.
    -------------------------------------------------------------------------- */
-#about-me {
-  /* Breathing room when the nav anchor jumps here. The header is static (it
-     scrolls away), so no fixed offset is required — but this also keeps the
-     heading clear of the nav should the header ever become sticky.
-     Smooth vs instant scrolling is handled by html{scroll-behavior} above,
-     which the prefers-reduced-motion block switches to `auto`. */
-  scroll-margin-top: var(--space-xl);
-}
-
+/* No per-section scroll-margin: html{scroll-padding-top} now offsets every
+   anchor for the sticky header in one place. */
 .about__grid { display: grid; grid-template-columns: 1fr; gap: var(--space-md); }
 
 @media (min-width: 60rem) {
@@ -826,8 +868,49 @@ a.carousel__frame { text-decoration: none; }
 }
 
 .footer__col p { margin-top: var(--space-xs); font-size: var(--size-lede); }
-.footer__col a { text-decoration: none; border-bottom: 2px solid var(--ink); padding-bottom: 0.1rem; }
-.footer__col a:hover { color: var(--muted); border-color: var(--muted); }
+
+/* --- Copy-email button -----------------------------------------------------
+   Looks like the old underlined email link, but it's a button that flips
+   (a vertical card turn) between the address and "Click to copy to clipboard"
+   on hover/focus, and holds on "Copied to clipboard" after a click. The panes
+   are position-stacked with backface-visibility, so the flip is pure
+   compositor work. Under reduced motion the global rule zeroes the transition,
+   leaving an instant text swap — the copying itself is untouched. */
+.email-copy {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;   /* buttons centre their text by default; both panes stay left-aligned */
+  cursor: pointer;
+  perspective: 600px;
+}
+.email-copy:hover { color: var(--muted); }
+
+.email-copy__panes {
+  display: block;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.35s ease;
+}
+.email-copy__front,
+.email-copy__back {
+  display: block;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  white-space: nowrap;
+}
+.email-copy__back {
+  position: absolute;
+  inset: 0;
+  transform: rotateX(180deg);
+}
+.email-copy:hover .email-copy__panes,
+.email-copy:focus-visible .email-copy__panes,
+.email-copy[data-copied="true"] .email-copy__panes {
+  transform: rotateX(180deg);
+}
 
 /* Copyright left, local-time readout right. Wraps to two stacked lines on
    narrow screens rather than letting the clock collide with the copyright. */
@@ -841,6 +924,7 @@ a.carousel__frame { text-decoration: none; }
 }
 
 .footer__legal,
+.footer__credit,
 .footer__clock {
   color: var(--muted);
   font-size: var(--size-label);
@@ -866,18 +950,31 @@ a.carousel__frame { text-decoration: none; }
    itself from its content rather than staying square.
 
    Tile sizes are assigned per image, not computed — three types (large 2x2,
-   wide 2x1, small 1x1) in a fixed DOM order that tiles a 4-column grid with
-   no holes:  4x(2x2) + 6x(2x1) + 8x(1x1) = 36 units = 9 rows x 4 cols.
+   wide 2x1, small 1x1): 7 large + 10 wide + 12 small = 60 units. 60 divides
+   evenly by 6/5/4/3/2, so every column count yields whole rows.
+
+   grid-auto-flow: dense backfills gaps, so the same 29 tiles pack tight at any
+   column count. The tile *sizes* are still hand-authored per image (the bento
+   character); dense only changes placement order to fill holes — necessary
+   because one fixed DOM order can't pack perfectly at six different column
+   counts at once.
+
+   Full-bleed: the wrapper drops the site .container, so the grid runs edge to
+   edge with only an 8px gutter (matching the gap) instead of the site gutter.
    -------------------------------------------------------------------------- */
-.visuals { container-type: inline-size; }
+.visuals {
+  container-type: inline-size;
+  padding-inline: 8px;         /* small, consistent gutter; otherwise edge-to-edge */
+}
 
 .visuals__grid {
-  --cols: 4;
+  --cols: 6;
   --gap: 8px;
   --cell: calc((100cqw - (var(--cols) - 1) * var(--gap)) / var(--cols));
   display: grid;
   grid-template-columns: repeat(var(--cols), var(--cell));
   grid-auto-rows: var(--cell);
+  grid-auto-flow: dense;
   gap: var(--gap);
   margin: 0;
   padding: 0;
@@ -910,16 +1007,20 @@ a.carousel__frame { text-decoration: none; }
   .visuals__tile:focus-visible img { transform: none; }
 }
 
-/* Two columns: large becomes a full-width square, wide a full-width 2:1 band,
-   small a half-width square. The same DOM order still tiles without holes. */
-@media (max-width: 60rem) {
-  .visuals__grid { --cols: 2; }
-}
+/* Column ramp: 6 across on large screens, stepping down so tiles never get too
+   small to read on the way to phone.
+
+   EVEN counts only (6, 4, 2). The mosaic contains 2x2 tiles, and a 2-wide span
+   cannot tile an odd-width grid without leaving holes no matter the DOM order
+   or dense packing — verified: 5 and 3 columns both leave gaps, 6/4/2 pack
+   perfectly. 6/4/2 still satisfy the target density at every size. */
+@media (max-width: 75rem) { .visuals__grid { --cols: 4; } }  /* ~1200px: tablet landscape / small laptop */
+@media (max-width: 44rem) { .visuals__grid { --cols: 2; } }  /* ~704px: large phone / small tablet */
 
 /* One column: square cells stop making sense, so rows size to each tile's own
    aspect ratio. Keeps wide-vs-square variation rather than flattening to a
    uniform stack. */
-@media (max-width: 30rem) {
+@media (max-width: 22rem) {
   .visuals__grid {
     --cols: 1;
     grid-template-columns: 1fr;

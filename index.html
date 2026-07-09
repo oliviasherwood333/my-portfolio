@@ -66,7 +66,7 @@
 
     <!-- Intro block ---------------------------------------------------------->
     <section class="section--tight" aria-labelledby="intro-heading">
-      <div class="container intro__container">
+      <div class="container">
         <p class="eyebrow">Portfolio</p>
         <h1 id="intro-heading">Hi, I'm Olivia. I turn complex products into simple experiences.</h1>
         <p class="intro__sub">With a background in content design, I design digital products that are clear, useful, and grounded in customer needs.</p>
@@ -290,15 +290,29 @@
   <!-- Footer ---------------------------------------------------------------->
   <footer class="site-footer section--tight" id="contact">
     <div class="container">
-      <h2 class="footer__heading">Get in touch</h2>
+      <h2 class="footer__heading">Let's chat</h2>
       <div class="footer__grid">
         <div class="footer__col">
-          <p class="eyebrow">Email</p>
-          <p><a href="mailto:oliviaellensherwood@gmail.com">oliviaellensherwood@gmail.com</a></p>
+          <!-- Copies the address rather than opening a mail client. A real
+               <button>, so keyboard operable for free; the visually-hidden
+               span is its accessible name, the aria-live region announces the
+               copy. The two panes flip on hover (instant under reduced
+               motion — the global rule zeroes the transition). -->
+          <p>
+            <button type="button" class="email-copy" data-email="oliviaellensherwood@gmail.com">
+              <span class="email-copy__panes" aria-hidden="true">
+                <span class="email-copy__front">oliviaellensherwood@gmail.com</span>
+                <span class="email-copy__back">Click to copy to clipboard</span>
+              </span>
+              <span class="visually-hidden">Copy email address oliviaellensherwood@gmail.com to clipboard</span>
+            </button>
+            <span class="visually-hidden" aria-live="polite" data-copy-status></span>
+          </p>
         </div>
       </div>
       <div class="footer__meta">
         <p class="footer__legal">© 2026 Olivia Sherwood</p>
+        <p class="footer__credit">Website designed + developed by Olivia</p>
         <!-- The label is fixed; the clock is the visitor's own local time.
              role="timer" carries an implicit aria-live="off", so assistive tech
              won't announce every tick. Empty until JS fills it, so with JS off
@@ -312,5 +326,6 @@
   <script src="assets/js/theme.js"></script>
   <script src="assets/js/nav.js"></script>
   <script src="assets/js/clock.js"></script>
+  <script src="assets/js/email-copy.js"></script>
 </body>
 </html>

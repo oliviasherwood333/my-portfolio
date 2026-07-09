@@ -225,15 +225,24 @@
   <!-- Footer ---------------------------------------------------------------->
   <footer class="site-footer section--tight" id="contact">
     <div class="container">
-      <h2 class="footer__heading">Get in touch</h2>
+      <h2 class="footer__heading">Let's chat</h2>
       <div class="footer__grid">
         <div class="footer__col">
-          <p class="eyebrow">Email</p>
-          <p><a href="mailto:oliviaellensherwood@gmail.com">oliviaellensherwood@gmail.com</a></p>
+          <p>
+            <button type="button" class="email-copy" data-email="oliviaellensherwood@gmail.com">
+              <span class="email-copy__panes" aria-hidden="true">
+                <span class="email-copy__front">oliviaellensherwood@gmail.com</span>
+                <span class="email-copy__back">Click to copy to clipboard</span>
+              </span>
+              <span class="visually-hidden">Copy email address oliviaellensherwood@gmail.com to clipboard</span>
+            </button>
+            <span class="visually-hidden" aria-live="polite" data-copy-status></span>
+          </p>
         </div>
       </div>
       <div class="footer__meta">
         <p class="footer__legal">© 2026 Olivia Sherwood</p>
+        <p class="footer__credit">Website designed + developed by Olivia</p>
         <p class="footer__clock">Leeds, UK <span class="footer__time" role="timer"></span></p>
       </div>
     </div>
@@ -242,5 +251,6 @@
   <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/nav.js"></script>
   <script src="../assets/js/clock.js"></script>
+  <script src="../assets/js/email-copy.js"></script>
 </body>
 </html>
