@@ -430,8 +430,8 @@ h3 { font-size: var(--size-h3); }
 
 /* Header clock slot (JS moves the single .footer__clock here on wide screens).
    margin-right: auto keeps it and the logo grouped on the left while the nav
-   actions stay pushed to the right. Nav font family and size, but regular
-   weight and muted colour so it reads as ambient detail, not the name. */
+   actions stay pushed to the right. Matches the nav links' font family, size
+   and weight, but keeps a muted colour so it reads as ambient detail. */
 .site-header__clock {
   display: flex;
   align-items: center;
@@ -439,7 +439,7 @@ h3 { font-size: var(--size-h3); }
 }
 .site-header__clock .footer__clock {
   font-size: 0.95rem;
-  font-weight: 400;
+  font-weight: 600;
   color: var(--muted);
 }
 
