@@ -25,7 +25,7 @@
 
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
+<body class="page-case">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- Header ---------------------------------------------------------------->
@@ -52,18 +52,59 @@
 
   <main id="main">
 
-    <!-- Title ---------------------------------------------------------------->
+    <!-- 1. Hero — a full product composition, shown uncropped and responsive
+         (srcset serves the right file size per screen; sizes = full viewport). -->
+    <figure class="cs-hero cs-hero--natural">
+      <img
+        src="../assets/images/summer-savings/hero-1500.jpg"
+        srcset="../assets/images/summer-savings/hero-750.jpg 750w,
+                ../assets/images/summer-savings/hero-1100.jpg 1100w,
+                ../assets/images/summer-savings/hero-1500.jpg 1500w,
+                ../assets/images/summer-savings/hero-2000.jpg 2000w,
+                ../assets/images/summer-savings/hero-2600.jpg 2600w,
+                ../assets/images/summer-savings/hero-3200.jpg 3200w"
+        sizes="100vw"
+        alt="Three phones showing Summer Savings reward screens in the OVO app: a free Costa Coffee, a free Cineworld cinema ticket, and a free Papa John's pizza."
+        width="2200" height="1000" fetchpriority="high">
+    </figure>
+
+    <!-- 2. Title + intro, 3. Meta block --------------------------------------->
     <section class="section--tight">
       <div class="container">
         <a class="cs-back" href="../index.html#work">← Back to work</a>
-        <p class="eyebrow" style="margin-top: var(--space-lg);">Case study</p>
-        <h1 class="cs-title">Summer Savings</h1>
+        <p class="eyebrow">Case study</p>
+        <div class="cs-titlesplit">
+          <h1 class="cs-title">Summer Savings</h1>
+          <div class="cs-titlesplit__intro">
+            <p class="cs-lede">Summer Savings was a seasonal rewards campaign designed to encourage Beyond members to return to the OVO app each week through exclusive offers from brands including Papa Johns, Costa and Cineworld.</p>
 
-        <figure class="cs-figure">
-          <img src="../assets/images/summer-savings/journey-overview.jpg" alt="Three OVO app screens showing the Summer Savings journey: the home screen with a free Papa John's pizza reward, the reward detail modal, and the claim form." width="1800" height="850">
-        </figure>
+            <dl class="cs-meta">
+              <div class="cs-meta__item">
+                <dt class="cs-meta__label">Role</dt>
+                <dd class="cs-meta__value">Product Designer</dd>
+              </div>
+              <div class="cs-meta__item">
+                <dt class="cs-meta__label">Skills</dt>
+                <dd class="cs-meta__value">
+                  <ul class="cs-meta__tags">
+                    <li>End-to-end journey mapping</li>
+                    <li>Design systems</li>
+                    <li>Reward &amp; redemption flows</li>
+                    <li>Content design</li>
+                    <li>Cross-team collaboration</li>
+                  </ul>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
       </div>
     </section>
+
+    <!-- 4. Second full-width image — uncropped, before the content starts. ---->
+    <figure class="cs-fullbleed">
+      <img src="../assets/images/summer-savings/journey-overview.jpg" alt="Three OVO app screens showing the Summer Savings journey: the home screen with a free Papa John's pizza reward, the reward detail modal, and the claim form." width="1800" height="850" loading="lazy">
+    </figure>
 
     <!-- Overview -------------------------------------------------------------->
     <section class="cs-section" aria-labelledby="overview">
@@ -82,11 +123,13 @@
             <img src="../assets/images/summer-savings/partner-logos.png" alt="Campaign partner logos: Papa Johns, National Dining Network, Cineworld and Costa Coffee." loading="lazy" width="1800" height="1720">
           </figure>
         </div>
+      </div>
 
-        <figure class="cs-figure">
-          <img src="../assets/images/summer-savings/rewards-list.png" alt="A rewards list card showing the four Summer Savings offers: free Papa John's pizza, £5 off eat in or takeaway, free Cineworld cinema ticket, and £4 Costa Coffee credit." loading="lazy" width="1800" height="850">
-        </figure>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/summer-savings/rewards-list.png" alt="A rewards list card showing the four Summer Savings offers: free Papa John's pizza, £5 off eat in or takeaway, free Cineworld cinema ticket, and £4 Costa Coffee credit." loading="lazy" width="1800" height="850">
+      </figure>
 
+      <div class="container">
         <div class="cs-figure-grid">
           <figure class="cs-figure">
             <img src="../assets/images/summer-savings/offer-cards.jpg" alt="Two Beyond offer cards: '50% off Papa John's pizza, June only' and '£5 off restaurants near you, all summer long'." loading="lazy" width="1800" height="1720">
@@ -106,17 +149,17 @@
           <p>Customers needed to move between the OVO app and partner websites to claim rewards. Each partner had different requirements, making the experience feel fragmented and inconsistent.</p>
           <p>The challenge was to create a seamless journey that customers could understand quickly while supporting multiple partners and new offers every week.</p>
         </div>
-
-        <figure class="cs-figure">
-          <img src="../assets/images/summer-savings/partner-landing-page.jpg" alt="A laptop showing the partner-hosted Summer Savings landing page: 'Say hello to Summer Savings — we're giving away 10,000 free small pizzas this June.'" loading="lazy" width="1800" height="850">
-          <figcaption>Rewards were claimed on partner-hosted pages outside the OVO app.</figcaption>
-        </figure>
-
-        <figure class="cs-figure">
-          <img src="../assets/images/summer-savings/offer-card-detail.jpg" alt="A close-up of the offers carousel showing a Papa Johns card reading 'Enjoy 1 free pizza, on us' with a 'More coming Monday' banner." loading="lazy" width="1800" height="850">
-          <figcaption>New offers landed every week, so the pattern had to hold up as content changed.</figcaption>
-        </figure>
       </div>
+
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/summer-savings/partner-landing-page.jpg" alt="A laptop showing the partner-hosted Summer Savings landing page: 'Say hello to Summer Savings — we're giving away 10,000 free small pizzas this June.'" loading="lazy" width="1800" height="850">
+        <figcaption>Rewards were claimed on partner-hosted pages outside the OVO app.</figcaption>
+      </figure>
+
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/summer-savings/offer-card-detail.jpg" alt="A close-up of the offers carousel showing a Papa Johns card reading 'Enjoy 1 free pizza, on us' with a 'More coming Monday' banner." loading="lazy" width="1800" height="850">
+        <figcaption>New offers landed every week, so the pattern had to hold up as content changed.</figcaption>
+      </figure>
     </section>
 
     <!-- Design process --------------------------------------------------------->
@@ -128,17 +171,19 @@
           <p>Rather than designing each reward individually, I created reusable patterns for reward pages, redemption flows and supporting content. This gave customers a familiar experience every time they claimed an offer while helping the team deliver new campaigns more efficiently.</p>
           <p>I also redesigned the third-party redemption experience, simplifying the language, improving guidance and creating a more consistent experience beyond the OVO app.</p>
         </div>
+      </div>
 
-        <figure class="cs-figure">
-          <img src="../assets/images/summer-savings/journey-sketch.png" alt="A hand-drawn wireframe sketch mapping the journey across three screens: home screen, offers, and the reward modal." loading="lazy" width="1500" height="708">
-          <figcaption>Mapping the end-to-end journey, from home screen to offers to reward modal.</figcaption>
-        </figure>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/summer-savings/journey-sketch.png" alt="A hand-drawn wireframe sketch mapping the journey across three screens: home screen, offers, and the reward modal." loading="lazy" width="1500" height="708">
+        <figcaption>Mapping the end-to-end journey, from home screen to offers to reward modal.</figcaption>
+      </figure>
 
-        <figure class="cs-figure">
-          <img src="../assets/images/summer-savings/reward-modals.jpg" alt="Three reward modals following the same pattern: claim £5 off restaurants, grab a free Papa John's pizza, and enjoy a free Costa Coffee — each with a summary, how-to-claim steps, a unique code and a claim button." loading="lazy" width="1800" height="850">
-          <figcaption>One reusable reward pattern: summary, how to claim, unique code, terms, and a single call to action.</figcaption>
-        </figure>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/summer-savings/reward-modals.jpg" alt="Three reward modals following the same pattern: claim £5 off restaurants, grab a free Papa John's pizza, and enjoy a free Costa Coffee — each with a summary, how-to-claim steps, a unique code and a claim button." loading="lazy" width="1800" height="850">
+        <figcaption>One reusable reward pattern: summary, how to claim, unique code, terms, and a single call to action.</figcaption>
+      </figure>
 
+      <div class="container">
         <div class="cs-figure-grid">
           <figure class="cs-figure">
             <img src="../assets/images/summer-savings/reward-modal-cineworld.jpg" alt="The Cineworld reward modal in the OVO app: 'Up to 40% off Cineworld', with how-to-claim steps and a claim reward button." loading="lazy" width="1800" height="1720">
@@ -147,12 +192,14 @@
             <img src="../assets/images/summer-savings/reward-modal-papa-johns.jpg" alt="The Papa John's reward modal in the OVO app: 'Up 50% off Papa John's pizza', following the same layout as the Cineworld modal." loading="lazy" width="1800" height="1720">
           </figure>
         </div>
+      </div>
 
-        <figure class="cs-figure">
-          <img src="../assets/images/summer-savings/claim-form-states.png" alt="The redesigned claim form shown twice: the default state, and an error state with helpful guidance under each field such as 'You'll find this in the OVO app'." loading="lazy" width="1800" height="850">
-          <figcaption>The redesigned claim form, with clearer guidance and human error messages.</figcaption>
-        </figure>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/summer-savings/claim-form-states.png" alt="The redesigned claim form shown twice: the default state, and an error state with helpful guidance under each field such as 'You'll find this in the OVO app'." loading="lazy" width="1800" height="850">
+        <figcaption>The redesigned claim form, with clearer guidance and human error messages.</figcaption>
+      </figure>
 
+      <div class="container">
         <div class="cs-figure-grid">
           <figure class="cs-figure">
             <img src="../assets/images/summer-savings/claim-forms.jpg" alt="Three partner claim pages — Cineworld, restaurants and Papa John's — all sharing the same layout, heading style and form fields." loading="lazy" width="1800" height="1720">
@@ -170,7 +217,7 @@
             <img src="../assets/images/summer-savings/acquisition-costa.jpg" alt="The same acquisition pattern applied to Costa Coffee: 'Enjoy a free drink from Costa Coffee, only with Beyond' and the matching 'Get rewards with Beyond' unlock screen." loading="lazy" width="1800" height="850">
           </figure>
         </div>
-        <p class="cs-prose" style="margin-top: var(--space-md); color: var(--muted); font-size: var(--size-small);">The same pattern, applied across partners.</p>
+        <p class="cs-note">The same pattern, applied across partners.</p>
       </div>
     </section>
 
@@ -209,14 +256,9 @@
           <p>This project reinforced the value of designing systems, not just individual screens. By creating reusable patterns and collaborating across teams, we delivered an experience that was easier for customers to use and quicker for the business to scale.</p>
         </div>
 
-        <div class="cs-figure-grid">
-          <figure class="cs-figure">
-            <img src="../assets/images/summer-savings/cinema-lifestyle.jpg" alt="Friends laughing together at the cinema, holding buckets of popcorn." loading="lazy" width="1800" height="1720">
-          </figure>
-          <figure class="cs-figure">
-            <img src="../assets/images/summer-savings/pizza-lifestyle.jpg" alt="Friends around a table at home, sharing pizza and playing cards." loading="lazy" width="1800" height="1720">
-          </figure>
-        </div>
+        <figure class="cs-figure">
+          <img src="../assets/images/summer-savings/cinema-lifestyle.jpg" alt="Friends laughing together at the cinema, holding buckets of popcorn." loading="lazy" width="1800" height="1720">
+        </figure>
       </div>
     </section>
 

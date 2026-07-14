@@ -749,7 +749,7 @@ h3 { font-size: var(--size-h3); }
   display: inline-block;
   margin-top: var(--space-md);
   font-weight: 600;
-  font-size: var(--size-small);
+  font-size: var(--size-label);
   text-decoration: none;
   border-bottom: 2px solid var(--ink);
   padding-bottom: 0.1rem;
@@ -837,10 +837,19 @@ a.carousel__frame { text-decoration: none; }
    impact block that gives the numbers real weight. Everything reads from the
    same monochrome tokens as the homepage, so it themes automatically.
    -------------------------------------------------------------------------- */
+/* One comfortable reading measure for every text block on a case study page.
+   Left-aligned inside the page's full-width padding, so copy reads as an
+   intentional column instead of sprawling across a wide screen — while the hero
+   and full-bleed figures still run edge to edge. Fluid rather than a fixed cap:
+   ~800-900px on typical large desktops, scaling down to a 600px floor on
+   smaller screens instead of hard-capping identically everywhere. */
+.page-case { --cs-measure: clamp(600px, 55vw, 900px); }
+
 .cs-back {
   display: inline-block;
+  margin-bottom: var(--space-lg);
   font-weight: 600;
-  font-size: var(--size-small);
+  font-size: var(--size-label);
   text-decoration: none;
   border-bottom: 2px solid transparent;
   padding-bottom: 0.1rem;
@@ -849,11 +858,126 @@ a.carousel__frame { text-decoration: none; }
 
 .cs-title { margin-top: var(--space-md); }
 
+/* Everything in the reading column shares one measure (see --cs-measure). The
+   hero, full-bleed figures and two-up image grids are deliberately excluded so
+   they can still use the full page width. */
+.page-case .eyebrow,
+.cs-title,
+.cs-section h2 { max-width: var(--cs-measure); }
+
+/* Title/intro two-column split — the case-study TITLE BLOCK ONLY. Title on the
+   left, intro + meta on the right; tops aligned. Stacks to one column on tablet
+   and below. Deliberately its own class (not shared with the sections) and with
+   no shared-selector rules, so it can't affect the section layout, the homepage,
+   or the nav. */
+.cs-titlesplit {
+  margin-top: var(--space-md);          /* space below the eyebrow */
+  max-width: 78rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+.cs-titlesplit > * { min-width: 0; }    /* let the copy wrap instead of overflowing */
+@media (min-width: 64rem) {
+  .cs-titlesplit {
+    grid-template-columns: 2fr 3fr;
+    column-gap: var(--space-2xl);
+    align-items: start;
+  }
+}
+/* Inside the split the columns set the width and the tops align, so drop the
+   single-column title margin and intro measure/offset. */
+.cs-titlesplit .cs-title { margin-top: 0; max-width: none; }
+.cs-titlesplit .cs-lede { margin-top: 0; max-width: none; }
+.cs-titlesplit .cs-meta { max-width: none; }
+
+/* Full-bleed hero: edge-to-edge, cropped to a wide cinematic band. The one
+   deliberate crop on the page — heroes are speced as cover, everything else
+   stays uncropped. Placed as a direct child of <main> (outside .container), so
+   it already spans the viewport with no breakout hack. */
+.cs-hero {
+  margin: 0;
+  height: clamp(14rem, 44vh, 32rem);
+}
+.cs-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Some heroes are a full composition (e.g. a product shot that carries its own
+   margin) rather than a croppable lifestyle band. Show these uncropped at their
+   natural ratio — full width, height from the image — so nothing important is
+   sliced off, and let srcset serve the right file size per screen. */
+.cs-hero--natural { height: auto; }
+.cs-hero--natural img { height: auto; background: var(--panel); }
+
+/* Full-width supporting image: also edge-to-edge, but never cropped — it keeps
+   its natural ratio and the band sizes to the image. Used for the second image
+   before the content, and any other shot that earns the full width. */
+.cs-fullbleed { margin: 0; }
+.cs-fullbleed img {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: var(--panel);
+}
+
+/* Short intro directly under the title — one line, lighter than the H1. */
+.cs-lede {
+  margin-top: var(--space-md);
+  max-width: var(--cs-measure);
+  font-size: var(--size-lede);
+  color: var(--muted);
+}
+
+/* Meta block — Role / Skills and friends. Quiet reference material framing the
+   opening: small uppercase labels over plain values, bordered top and bottom
+   like the impact block. Stacks on mobile, sits in a row on wider screens. */
+.cs-meta {
+  margin: var(--space-lg) 0 0;
+  max-width: var(--cs-measure);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  border-block: 1px solid var(--line);
+  padding-block: var(--space-lg);
+}
+@media (min-width: 48rem) {
+  .cs-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xl); }
+}
+.cs-meta__label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-size: var(--size-label);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.cs-meta__value { margin: 0; font-size: var(--size-body); }
+
+/* Skills as a plain monochrome tag list — an outlined pill each, no fill. */
+.cs-meta__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.cs-meta__tags li {
+  font-size: 0.9375rem;             /* was --size-label (13px) — a touch larger to read easily */
+  padding: 0.5em 1.1em;             /* more room, both axes */
+  color: var(--ink);                /* full-strength text, not inherited muted */
+  /* --line is too faint against the page in both themes; --muted gives the
+     outline real contrast on the off-white and on the near-black. */
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+}
+
 .cs-section { padding-block: var(--space-xl); }
 
 /* Running copy stays at a comfortable measure even though figures below can
    stretch the full width of the page. */
-.cs-prose { max-width: var(--measure); }
+.cs-prose { max-width: var(--cs-measure); }
 .cs-prose p { font-size: var(--size-lede); }
 .cs-prose p + p { margin-top: var(--space-md); }
 .cs-section h2 + .cs-prose { margin-top: var(--space-md); }
@@ -868,7 +992,28 @@ a.carousel__frame { text-decoration: none; }
 }
 .cs-figure figcaption {
   margin-top: var(--space-sm);
-  font-size: var(--size-small);
+  font-size: var(--size-label);
+  color: var(--muted);
+  max-width: var(--measure);
+}
+
+/* Full-bleed figure. These live OUTSIDE .container in the markup (as direct
+   children of the section), so the image is simply width:100% of the full-width
+   section — flush to both viewport edges, exactly like the hero. No 100vw / no
+   negative-margin breakout, so nothing depends on scrollbar width (100vw counts
+   the scrollbar; the content area doesn't — that mismatch is the old edge gap).
+   The figcaption is pulled back into the constrained content column and left-
+   aligned to it, so only the image runs edge to edge, never the caption. */
+.cs-figure--bleed { margin-inline: 0; }
+.cs-figure--bleed figcaption {
+  margin-inline-start: max(var(--gutter), calc((100% - var(--max-width)) / 2 + var(--gutter)));
+  margin-inline-end: var(--gutter);
+}
+
+/* Caption for a group of figures (a single image uses figcaption instead). */
+.cs-note {
+  margin-top: var(--space-md);
+  font-size: var(--size-label);
   color: var(--muted);
   max-width: var(--measure);
 }
@@ -885,17 +1030,18 @@ a.carousel__frame { text-decoration: none; }
 }
 .cs-figure-grid .cs-figure { margin-top: 0; }
 
-/* Impact: large numerals, generous spacing. */
+/* Impact: large numerals, generous spacing. Stacked within the reading column
+   rather than spread three-across — the numerals are too big to sit side by side
+   at this measure, and a vertical run keeps them aligned with the rest of the
+   copy while still reading boldly. */
 .cs-stats {
   margin-top: var(--space-xl);
+  max-width: var(--cs-measure);
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-lg);
   border-top: 1px solid var(--line);
   padding-top: var(--space-xl);
-}
-@media (min-width: 48rem) {
-  .cs-stats { grid-template-columns: repeat(3, 1fr); gap: var(--space-2xl); }
 }
 
 .cs-stat__number {
@@ -919,7 +1065,7 @@ a.carousel__frame { text-decoration: none; }
   border-top: 1px solid var(--line);
   font-weight: 700;
   font-size: clamp(1.25rem, 1.5vw + 1rem, 1.75rem);
-  max-width: var(--measure);
+  max-width: var(--cs-measure);
 }
 
 /* --------------------------------------------------------------------------
