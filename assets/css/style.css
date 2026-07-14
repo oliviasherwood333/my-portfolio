@@ -1184,6 +1184,9 @@ a.carousel__frame { text-decoration: none; }
    Full-bleed: the wrapper drops the site .container, so the grid runs edge to
    edge with only an 8px gutter (matching the gap) instead of the site gutter.
    -------------------------------------------------------------------------- */
+/* Page title sits in the normal content column, above the full-bleed grid. */
+.visuals__title { margin-bottom: var(--space-lg); }
+
 .visuals {
   container-type: inline-size;
   padding-inline: 8px;         /* small, consistent gutter; otherwise edge-to-edge */
