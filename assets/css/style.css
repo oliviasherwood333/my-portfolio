@@ -666,6 +666,10 @@ h3 { font-size: var(--size-h3); }
   font-size: clamp(1.75rem, 4.2vw, 3.375rem);
 }
 
+/* The role sits on its own line under the greeting, with a small break that
+   scales with the (fluid) heading size. */
+#intro-heading .intro__role { display: block; margin-top: 0.5em; }
+
 /* Sub-copy under the headline: lighter and smaller, capped at a readable
    measure while the layout around it stays full-width. */
 .intro__sub {
