@@ -173,35 +173,100 @@
    position. The header is at y=0 everywhere, so its group tween is a no-op. */
 .site-header { view-transition-name: site-header; }
 
-/* Chrome: a short opacity-only crossfade, no movement. Long enough to soften
-   the nav's aria-current underline moving between pages, short enough that the
-   header reads as stationary. */
-::view-transition-old(site-header),
-::view-transition-new(site-header) {
-  animation-duration: 180ms;
-  animation-timing-function: ease;
-}
+/* Header: furniture — hold it perfectly still across a navigation.
 
-/* Content: the outgoing page lifts and fades away quickly; the incoming page
-   rises into place slowly on a decelerating curve, after a short beat. The
-   overlap plus the asymmetry is what reads as editorial rather than as a
-   dissolve — it moves in one direction instead of dipping through blank.
+   Naming it already lifts it out of the root crossfade. But two things still
+   made the bar jitter when tapping between pages:
+     1) the GROUP would tween any sub-pixel geometry delta between the two
+        pages' headers, and
+     2) cross-fading the old and new header snapshots double-exposed the parts
+        that legitimately differ per page — the active-link underline and the
+        live clock (which JS relocates into the header) — ghosting as a shimmer.
+   Pin the group (no geometry tween) and swap the snapshots instantly rather than
+   cross-fading, so the header just shows the new page's state with no motion. */
+::view-transition-group(site-header) { animation-duration: 0s; }
+::view-transition-old(site-header) { animation: none; opacity: 0; }
+::view-transition-new(site-header) { animation: none; opacity: 1; }
 
-   Only opacity and transform, so both run entirely on the compositor. No
-   layout, no paint, no main-thread work — this is why it stays smooth on a
-   phone with 18 images on screen. */
-::view-transition-old(root) {
-  animation: vt-content-out 220ms cubic-bezier(0.3, 0, 0.8, 0.15) both;
-}
+/* Everything left in `root` — the page background and the footer — simply
+   crossfades. No movement, so the footer can never slide across the viewport
+   from a scrolled-down position. The content blocks below ride on top of this
+   with the real motion. */
+::view-transition-old(root),
 ::view-transition-new(root) {
-  animation: vt-content-in 460ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* Staggered content entrance — the chrome://whats-new quality.
+
+   Each top-level block is its own snapshot (named further down), so the
+   incoming page doesn't land as one rigid sheet: the hero settles first, then
+   the block beneath it a beat later, each fading up on a confident ease-out —
+   the same decelerating curve family Chrome uses in its own UI. Outgoing blocks
+   leave together and quickly; only the arrival is staged, which is exactly what
+   separates a polished load-in from an abrupt one.
+
+   transform + opacity only, so every frame is compositor-only — no layout, no
+   paint — smooth even on the visuals page with its wall of images. The single
+   shared curve means nothing fights, and the short durations keep it snappy. */
+::view-transition-old(vt-home-1),
+::view-transition-old(vt-home-2),
+::view-transition-old(vt-home-3),
+::view-transition-old(vt-visuals-1),
+::view-transition-old(vt-case-1),
+::view-transition-old(vt-case-2),
+::view-transition-old(vt-case-3),
+::view-transition-old(vt-case-4),
+::view-transition-old(vt-case-5),
+::view-transition-old(vt-case-6) {
+  animation: vt-content-out 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+::view-transition-new(vt-home-1),
+::view-transition-new(vt-home-2),
+::view-transition-new(vt-home-3),
+::view-transition-new(vt-visuals-1),
+::view-transition-new(vt-case-1),
+::view-transition-new(vt-case-2),
+::view-transition-new(vt-case-3),
+::view-transition-new(vt-case-4),
+::view-transition-new(vt-case-5),
+::view-transition-new(vt-case-6) {
+  animation: vt-content-in 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* The stagger itself: each block starts a beat after the one above it. Delays
+   are capped so blocks far down the page (mostly off-screen anyway) have
+   entered by the time you scroll to them, rather than sitting there waiting. */
+::view-transition-new(vt-home-2),
+::view-transition-new(vt-case-2) { animation-delay: 70ms; }
+::view-transition-new(vt-home-3),
+::view-transition-new(vt-case-3) { animation-delay: 140ms; }
+::view-transition-new(vt-case-4),
+::view-transition-new(vt-case-5),
+::view-transition-new(vt-case-6) { animation-delay: 190ms; }
+
+/* Name the blocks. Page-scoped (page-home / page-visuals / page-case on <body>)
+   so a block on one page never shares a name with a block on another — a shared
+   name would make the browser tween the two blocks' differing geometry (the
+   squash/slide the header comment above avoids) instead of a clean enter. Being
+   page-unique, every block is only ever enter-only or exit-only. */
+.page-home    main > section:nth-of-type(1) { view-transition-name: vt-home-1; }
+.page-home    main > section:nth-of-type(2) { view-transition-name: vt-home-2; }
+.page-home    main > section:nth-of-type(3) { view-transition-name: vt-home-3; }
+.page-visuals main > section:nth-of-type(1) { view-transition-name: vt-visuals-1; }
+.page-case    main > section:nth-of-type(1) { view-transition-name: vt-case-1; }
+.page-case    main > section:nth-of-type(2) { view-transition-name: vt-case-2; }
+.page-case    main > section:nth-of-type(3) { view-transition-name: vt-case-3; }
+.page-case    main > section:nth-of-type(4) { view-transition-name: vt-case-4; }
+.page-case    main > section:nth-of-type(5) { view-transition-name: vt-case-5; }
+.page-case    main > section:nth-of-type(6) { view-transition-name: vt-case-6; }
 
 @keyframes vt-content-out {
-  to { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 0; transform: translateY(-8px); }
 }
 @keyframes vt-content-in {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(16px); }
 }
 
 /* The global reduced-motion rule below uses `*`, which cannot match the
