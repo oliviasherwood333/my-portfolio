@@ -38,7 +38,20 @@
       isDark ? "Switch to light mode" : "Switch to dark mode"
     );
   }
+
+  // The switch ships "off" in the HTML and we correct it here — a step after the
+  // page has already painted. In dark mode that flip would otherwise run the
+  // knob's slide (and the track's colour fade) on every load and every
+  // navigation, so the switch appears to animate itself. Suppress transitions
+  // for just this first sync, then re-enable them a frame later so genuine
+  // clicks still animate.
+  root.classList.add("theme-booting");
   syncSwitch();
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      root.classList.remove("theme-booting");
+    });
+  });
 
   // Briefly enable the cross-fade only around the switch itself.
   var transitionTimer;
