@@ -618,6 +618,13 @@ h3 { font-size: var(--size-h3); }
 .theme-toggle[aria-checked="true"] { background: #1A1A1A; }
 .theme-toggle[aria-checked="true"] .theme-toggle__knob { transform: translateX(20px); }
 
+/* First paint only: JS sets the switch's real state a beat after load, so in
+   dark mode the knob would slide and the track fade in from "off" on every
+   navigation. While booting, kill those transitions so the switch just appears
+   correct; theme.js drops this class a frame later and clicks animate again. */
+.theme-booting .theme-toggle,
+.theme-booting .theme-toggle__knob { transition: none; }
+
 /* The on state only ever coincides with dark mode, so a #1A1A1A track would
    otherwise sit near-invisibly on the #151412 page. A hairline inset ring
    restores the track's silhouette without changing its size or fill. */
