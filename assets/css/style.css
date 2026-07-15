@@ -673,7 +673,6 @@ h3 { font-size: var(--size-h3); }
 /* Sub-copy under the headline: lighter and smaller, capped at a readable
    measure while the layout around it stays full-width. */
 .intro__sub {
-  margin-top: var(--space-md);
   font-size: var(--size-lede);
   font-weight: 400;
   line-height: 1.4;
