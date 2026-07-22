@@ -8,4 +8,4 @@ Allow: /
 Disallow:
 
 # Machine-readable list of the public pages, for crawler discovery.
-Sitemap: https://oliviasherwood333.github.io/my-portfolio/sitemap.xml
+Sitemap: https://olivia-sherwood-portfolio.com/sitemap.xml
