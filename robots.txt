@@ -1,0 +1,8 @@
+# robots.txt
+# Allow every search engine, crawler and automated tool full access to the
+# whole site. This is a public portfolio — there are no admin, cart, login or
+# other private routes to keep out, so nothing is disallowed.
+
+User-agent: *
+Allow: /
+Disallow:
