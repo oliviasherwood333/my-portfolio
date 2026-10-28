@@ -846,7 +846,10 @@ a.carousel__frame { text-decoration: none; }
    and full-bleed figures still run edge to edge. Fluid rather than a fixed cap:
    ~800-900px on typical large desktops, scaling down to a 600px floor on
    smaller screens instead of hard-capping identically everywhere. */
-.page-case { --cs-measure: clamp(600px, 55vw, 900px); }
+.page-case {
+  --cs-measure: clamp(600px, 55vw, 900px);
+  --cs-content: 64rem;   /* the case study's centred reading column */
+}
 
 .cs-back {
   display: inline-block;
@@ -861,12 +864,11 @@ a.carousel__frame { text-decoration: none; }
 
 .cs-title { margin-top: var(--space-md); }
 
-/* Everything in the reading column shares one measure (see --cs-measure). The
-   hero, full-bleed figures and two-up image grids are deliberately excluded so
-   they can still use the full page width. */
+/* The opening eyebrow + title keep the older fluid measure. The body sections
+   below use --cs-content instead (a single centred reading column), and the
+   hero / full-bleed figures / image grids run wider still. */
 .page-case .eyebrow,
-.cs-title,
-.cs-section h2 { max-width: var(--cs-measure); }
+.cs-title { max-width: var(--cs-measure); }
 
 /* Title/intro two-column split — the case-study TITLE BLOCK ONLY. Title on the
    left, intro + meta on the right; tops aligned. Stacks to one column on tablet
@@ -888,6 +890,10 @@ a.carousel__frame { text-decoration: none; }
     align-items: start;
   }
 }
+/* Centre the whole title block so it sits on the same axis as the centred body
+   below, rather than flush-left while everything under it is centred. The split
+   itself (its two columns, its 78rem width) is unchanged — only its position. */
+.page-case main > .section--tight > .container { max-width: 78rem; }
 /* Inside the split the columns set the width and the tops align, so drop the
    single-column title margin and intro measure/offset. */
 .cs-titlesplit .cs-title { margin-top: 0; max-width: none; }
@@ -978,9 +984,12 @@ a.carousel__frame { text-decoration: none; }
 
 .cs-section { padding-block: var(--space-xl); }
 
-/* Running copy stays at a comfortable measure even though figures below can
-   stretch the full width of the page. */
-.cs-prose { max-width: var(--cs-measure); }
+/* The body reads as one centred column at a comfortable width — copy, headings
+   AND the two-up image grids share it — instead of copy pinned left with a
+   permanently empty right half. The hero and full-bleed figures sit outside
+   .container, so they still run edge to edge. */
+.page-case .cs-section > .container { max-width: var(--cs-content); }
+
 .cs-prose p { font-size: var(--size-lede); }
 .cs-prose p + p { margin-top: var(--space-md); }
 .cs-section h2 + .cs-prose { margin-top: var(--space-md); }
@@ -1009,7 +1018,8 @@ a.carousel__frame { text-decoration: none; }
    aligned to it, so only the image runs edge to edge, never the caption. */
 .cs-figure--bleed { margin-inline: 0; }
 .cs-figure--bleed figcaption {
-  margin-inline-start: max(var(--gutter), calc((100% - var(--max-width)) / 2 + var(--gutter)));
+  /* Pull the caption back to the same centred reading column as the body copy. */
+  margin-inline-start: max(var(--gutter), calc((100% - var(--cs-content)) / 2 + var(--gutter)));
   margin-inline-end: var(--gutter);
 }
 
@@ -1039,7 +1049,6 @@ a.carousel__frame { text-decoration: none; }
    copy while still reading boldly. */
 .cs-stats {
   margin-top: var(--space-xl);
-  max-width: var(--cs-measure);
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-lg);
@@ -1068,7 +1077,6 @@ a.carousel__frame { text-decoration: none; }
   border-top: 1px solid var(--line);
   font-weight: 700;
   font-size: clamp(1.25rem, 1.5vw + 1rem, 1.75rem);
-  max-width: var(--cs-measure);
 }
 
 /* --------------------------------------------------------------------------
