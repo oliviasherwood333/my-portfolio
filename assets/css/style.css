@@ -890,10 +890,11 @@ a.carousel__frame { text-decoration: none; }
     align-items: start;
   }
 }
-/* Centre the whole title block so it sits on the same axis as the centred body
-   below, rather than flush-left while everything under it is centred. The split
-   itself (its two columns, its 78rem width) is unchanged — only its position. */
-.page-case main > .section--tight > .container { max-width: 78rem; }
+/* Centre the whole title block and align it to the same column as the body
+   below (--cs-content), so the title, copy and imagery all share one edge
+   instead of the title sprawling wider. The split's two columns still divide
+   that width 2:3. */
+.page-case main > .section--tight > .container { max-width: var(--cs-content); }
 /* Inside the split the columns set the width and the tops align, so drop the
    single-column title margin and intro measure/offset. */
 .cs-titlesplit .cs-title { margin-top: 0; max-width: none; }
@@ -954,7 +955,10 @@ a.carousel__frame { text-decoration: none; }
   padding-block: var(--space-lg);
 }
 @media (min-width: 48rem) {
-  .cs-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xl); }
+  /* Role only needs its content width ("Product Designer"); give the rest to
+     Skills so the tag pills don't get squeezed into wrapping — the title block's
+     narrower column used to force them onto two lines each. */
+  .cs-meta { grid-template-columns: auto minmax(0, 1fr); gap: var(--space-xl); }
 }
 .cs-meta__label {
   display: block;
@@ -990,9 +994,15 @@ a.carousel__frame { text-decoration: none; }
    .container, so they still run edge to edge. */
 .page-case .cs-section > .container { max-width: var(--cs-content); }
 
+/* Running text sits at a tighter measure than the media around it: headings and
+   body copy cap at 42rem for comfortable line lengths, while the full-bleed
+   figures and image grids keep the full --cs-content width. */
+.cs-section h2,
+.cs-prose { max-width: 42rem; }
+
 .cs-prose p { font-size: var(--size-lede); }
 .cs-prose p + p { margin-top: var(--space-md); }
-.cs-section h2 + .cs-prose { margin-top: var(--space-md); }
+.cs-section h2 + .cs-prose { margin-top: 1rem; }
 
 /* Figures. Images are never cropped: they keep their natural aspect ratio and
    the container sizes around them (height: auto). */
@@ -1023,6 +1033,12 @@ a.carousel__frame { text-decoration: none; }
   margin-inline-end: var(--gutter);
 }
 
+/* The closing lifestyle image is near-square, so edge-to-edge it would tower
+   over a wide screen. Crop it to a cinematic band — like the hero, the only
+   other deliberate crop on the page. */
+.cs-figure--band { height: clamp(16rem, 50vh, 34rem); }
+.cs-figure--band img { height: 100%; object-fit: cover; }
+
 /* Caption for a group of figures (a single image uses figcaption instead). */
 .cs-note {
   margin-top: var(--space-md);
@@ -1043,10 +1059,24 @@ a.carousel__frame { text-decoration: none; }
 }
 .cs-figure-grid .cs-figure { margin-top: 0; }
 
-/* Impact: large numerals, generous spacing. Stacked within the reading column
-   rather than spread three-across — the numerals are too big to sit side by side
-   at this measure, and a vertical run keeps them aligned with the rest of the
-   copy while still reading boldly. */
+/* Spacing between full-width visual blocks (bleed figures + image grids): a
+   tight, even 24px, so a run of imagery reads as one sequence instead of
+   drifting apart. Overrides the looser default figure/grid top margin. */
+.cs-section .cs-figure--bleed,
+.cs-section .cs-figure-grid { margin-top: 24px; }
+
+/* ...but the first visual block coming off the intro prose gets more air, to
+   separate the imagery from the copy. That first block is either a grid sitting
+   inside the prose container, or the first full-bleed figure after a prose-only
+   container (a container that holds a grid is handled by the rule above). */
+.cs-prose + .cs-figure-grid,
+.cs-section > .container:first-child:not(:has(.cs-figure-grid)) + .cs-figure--bleed {
+  margin-top: var(--space-lg);
+}
+
+/* Impact: large numerals, generous spacing. Stacked on narrow screens (the full
+   numerals need the width); they move to three-across on desktop — see the
+   min-width: 64rem rule below. */
 .cs-stats {
   margin-top: var(--space-xl);
   display: grid;
@@ -1068,6 +1098,13 @@ a.carousel__frame { text-decoration: none; }
   margin-top: var(--space-sm);
   color: var(--muted);
   font-size: var(--size-lede);
+}
+
+/* Once there's room (desktop), run the three stats across in one row. The
+   numerals cap at 3.5rem so they fit side by side within the reading column. */
+@media (min-width: 64rem) {
+  .cs-stats { grid-template-columns: repeat(3, 1fr); }
+  .cs-stat__number { font-size: min(clamp(2.75rem, 5vw + 1rem, 4.5rem), 3.5rem); }
 }
 
 /* The fourth impact point has no numeral — give it its own emphasis. */
