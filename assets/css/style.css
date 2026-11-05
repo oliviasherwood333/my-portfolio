@@ -955,6 +955,9 @@ a.carousel__frame { text-decoration: none; }
 }
 @media (min-width: 48rem) {
   .cs-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xl); }
+  /* An odd last item (e.g. Skills after Role + Team) spans the full row, so
+     the pills use the whole column instead of wrapping in one half. */
+  .cs-meta__item:last-child:nth-child(odd) { grid-column: 1 / -1; }
 }
 .cs-meta__label {
   display: block;
