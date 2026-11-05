@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redesigning filters — Olivia Sherwood</title>
+  <meta name="description" content="How I made OVO's offer filters simpler to scan by rewriting the labels, clarifying active states and building a reusable component.">
+  <link rel="canonical" href="https://olivia-sherwood-portfolio.com/case-studies/redesigning-filters.html">
+
+  <!-- Open Graph / Twitter — social-share preview. -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Olivia Sherwood">
+  <meta property="og:locale" content="en_GB">
+  <meta property="og:title" content="Redesigning filters — a case study by Olivia Sherwood">
+  <meta property="og:description" content="How I made OVO's offer filters simpler to scan by rewriting the labels, clarifying active states and building a reusable component.">
+  <meta property="og:url" content="https://olivia-sherwood-portfolio.com/case-studies/redesigning-filters.html">
+  <meta property="og:image" content="https://olivia-sherwood-portfolio.com/assets/images/filters/hero.jpg">
+  <meta property="og:image:width" content="1800">
+  <meta property="og:image:height" content="1252">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Redesigning filters — a case study by Olivia Sherwood">
+  <meta name="twitter:description" content="How I made OVO's offer filters simpler to scan by rewriting the labels, clarifying active states and building a reusable component.">
+  <meta name="twitter:image" content="https://olivia-sherwood-portfolio.com/assets/images/filters/hero.jpg">
+
+  <!-- Apply the saved theme before first paint, so there's no flash of the
+       wrong mode on load. No stored choice = follow the OS. -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "dark" || t === "light") {
+          document.documentElement.setAttribute("data-theme", t);
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body class="page-case">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Header ---------------------------------------------------------------->
+  <header class="site-header" id="top">
+    <div class="container">
+      <a class="site-logo" href="../index.html">Olivia Sherwood</a>
+      <div class="site-header__actions">
+        <nav class="site-nav" id="primary-nav" aria-label="Primary">
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../visuals.html">Visuals</a></li>
+            <li><a href="../index.html#about-me">About me</a></li>
+          </ul>
+        </nav>
+        <button type="button" class="theme-toggle" role="switch" aria-checked="false" aria-label="Switch to dark mode">
+          <span class="theme-toggle__knob" aria-hidden="true"></span>
+        </button>
+        <button type="button" class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+          <span class="nav-toggle__bar" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- 1. Hero -->
+    <figure class="cs-hero cs-hero--natural">
+      <img src="../assets/images/filters/hero.jpg" sizes="100vw"
+        alt="Three phones showing the OVO Offers screen with the redesigned filter row above a free solar panels offer."
+        width="1800" height="1252" fetchpriority="high">
+    </figure>
+
+    <!-- 2. Title + intro, 3. Meta block -->
+    <section class="section--tight">
+      <div class="container">
+        <a class="cs-back" href="../index.html#work">← Back to work</a>
+        <p class="eyebrow">Case study</p>
+        <div class="cs-titlesplit">
+          <h1 class="cs-title">Redesigning filters</h1>
+          <div class="cs-titlesplit__intro">
+            <p class="cs-lede">As OVO's offers and rewards grew, customers struggled to browse and find what suited them. I redesigned the filter component to make it simpler and more intuitive, starting with the words.</p>
+
+            <dl class="cs-meta">
+              <div class="cs-meta__item">
+                <dt class="cs-meta__label">Role</dt>
+                <dd class="cs-meta__value">Content Designer</dd>
+              </div>
+              <div class="cs-meta__item">
+                <dt class="cs-meta__label">Team and timeline</dt>
+                <dd class="cs-meta__value">[DRAFT: about 6 weeks, with a product manager and 2 engineers. Please confirm.]</dd>
+              </div>
+              <div class="cs-meta__item">
+                <dt class="cs-meta__label">Skills</dt>
+                <dd class="cs-meta__value">
+                  <ul class="cs-meta__tags">
+                    <li>Content design</li>
+                    <li>UX writing</li>
+                    <li>Information architecture</li>
+                    <li>Accessibility</li>
+                    <li>Usability testing</li>
+                  </ul>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Overview -->
+    <section class="cs-section" aria-labelledby="overview">
+      <div class="container">
+        <h2 id="overview">Overview</h2>
+        <div class="cs-prose">
+          <p>As OVO's offers and rewards grew, customers struggled to browse and find what suited them.</p>
+          <p>I redesigned the filter component to make it simpler and more intuitive, helping customers get more value from their rewards.</p>
+          <p>My goals were to:</p>
+          <ul>
+            <li>make filters more visible and intuitive</li>
+            <li>reduce confusion and customer queries</li>
+            <li>explore whether the pattern could be reused across the wider app</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- The problem -->
+    <section class="cs-section" aria-labelledby="problem">
+      <div class="container">
+        <h2 id="problem">Understanding the problem</h2>
+        <div class="cs-prose">
+          <p>I reviewed how customers were using the filters and spotted a few common issues:</p>
+          <ul>
+            <li>there was no active state when landing on the Offers screen</li>
+            <li>applied filters weren't visually clear</li>
+            <li>labels were too long and often wrapped onto 2 lines</li>
+            <li>the component was taller than it needed to be</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/filters/audit.jpg" alt="An audit of the old Offers filters, annotated by hand: 'Do icons add much?', 'Hard to scan', 'Marketing language', 'Long labels' and 'Height too large, takes up real estate'." loading="lazy" width="1800" height="849">
+      </figure>
+    </section>
+
+    <!-- Looking outwards -->
+    <section class="cs-section" aria-labelledby="outwards">
+      <div class="container">
+        <h2 id="outwards">Looking outwards</h2>
+        <div class="cs-prose">
+          <p>To sense-check our approach, I explored how apps like Spotify, Airbnb and Deliveroo handle filters. The best examples kept things simple: short labels, bold styles and no faff.</p>
+          <p>From this, I landed on 3 principles to guide the work:</p>
+          <ol>
+            <li>Keep labels short, ideally 1 word.</li>
+            <li>Make active states clear.</li>
+            <li>Add a reset option, like 'All', so customers can easily start again.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rewriting the labels -->
+    <section class="cs-section" aria-labelledby="labels">
+      <div class="container">
+        <h2 id="labels">Rewriting the labels</h2>
+        <div class="cs-prose">
+          <p>I rewrote the filter labels to be shorter and more intuitive. Removing the marketing jargon made them much easier to scan.</p>
+          <p>I also created naming rules and guidance for future filters, so labels stay consistent and clear as more offers are added.</p>
+        </div>
+      </div>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/filters/label-mapping.jpg" alt="Sticky notes mapping old labels to new ones: Latest Offers to Latest, Energy Saver to Energy, EV Offers to EV, Solar Saver to Solar, Better Heating to Heating, Partner Perks to Partners, and Beyond rewards to Rewards." loading="lazy" width="1800" height="849">
+      </figure>
+    </section>
+
+    <!-- Iterations -->
+    <section class="cs-section" aria-labelledby="iterations">
+      <div class="container">
+        <h2 id="iterations">First iterations</h2>
+        <div class="cs-prose">
+          <p>I tried a few different layouts, including starting with an 'All' option so customers could see everything upfront and reset with one tap.</p>
+        </div>
+      </div>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/filters/icon-sketches.jpg" alt="Hand-drawn sketches of filter icons and labels: All, Free, Energy, EV and Solar." loading="lazy" width="1800" height="849">
+      </figure>
+    </section>
+
+    <!-- Refining the UI -->
+    <section class="cs-section" aria-labelledby="refining">
+      <div class="container">
+        <h2 id="refining">Refining the UI</h2>
+        <div class="cs-prose">
+          <p>I aligned the icons, cleaned up the spacing and used a highlighted pill to show the active state. The result was a more focused, less distracting design.</p>
+        </div>
+      </div>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/filters/pill-iterations.jpg" alt="Eight variations of the filter pill row, each reading All, Rewards, Energy and Partners, exploring different colours for the active and inactive states." loading="lazy" width="1800" height="849">
+      </figure>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/filters/active-states.jpg" alt="The final filter row shown 7 times, with a different filter active each time: All, Rewards, Energy, Electric vehicle, Solar, Heating and Partners." loading="lazy" width="1800" height="849">
+      </figure>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/filters/before-after.jpg" alt="Before and after: the old Offers header with icon-heavy filters and no active state, next to the new header with a highlighted 'All' pill followed by Rewards, Energy and Electric vehicle." loading="lazy" width="1800" height="849">
+      </figure>
+    </section>
+
+    <!-- Usability testing -->
+    <section class="cs-section" aria-labelledby="testing">
+      <div class="container">
+        <h2 id="testing">Usability testing</h2>
+        <div class="cs-prose">
+          <p>I ran an unmoderated test to compare the old and new designs. To get unbiased results, I excluded UX professionals and wrote clear, neutral questions, like:</p>
+          <ul>
+            <li>"What do you think this option will do?"</li>
+            <li>"Can you tell which filters are applied?"</li>
+            <li>"Is anything unclear or confusing?"</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Impact -->
+    <section class="cs-section" aria-labelledby="impact">
+      <div class="container">
+        <h2 id="impact">Impact</h2>
+        <div class="cs-prose">
+          <p>Participants described the new design as "simple", "clear" and "straightforward".</p>
+          <p>We launched the new filters as an A/B test to 25,000 Beyond customers, so we could measure the impact before a full launch. [DRAFT: add a result here if you have one, for example the change in filter use or offer clicks.]</p>
+        </div>
+      </div>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/filters/ab-test.jpg" alt="Three phones showing the new filters on the Offers screen during the Summer Savings campaign." loading="lazy" width="1800" height="849">
+      </figure>
+    </section>
+
+    <!-- Making it reusable -->
+    <section class="cs-section" aria-labelledby="reusable">
+      <div class="container">
+        <h2 id="reusable">Making it reusable</h2>
+        <div class="cs-prose">
+          <p>The new filter is built to last. Other teams can reuse the component without starting from scratch, which reduces design debt and keeps the app consistent.</p>
+        </div>
+      </div>
+      <figure class="cs-figure cs-figure--bleed">
+        <img src="../assets/images/filters/reuse-bills.jpg" alt="The same pill filter reused on the OVO Bills screen, where customers switch between months: All, January, February, March and April." loading="lazy" width="1800" height="849">
+      </figure>
+    </section>
+
+  </main>
+
+  <!-- Footer ---------------------------------------------------------------->
+  <footer class="site-footer section--tight" id="contact">
+    <div class="container">
+      <h2 class="footer__heading">Let's chat</h2>
+      <div class="footer__grid">
+        <div class="footer__col">
+          <p>
+            <button type="button" class="email-copy" data-email="oliviaellensherwood@gmail.com">
+              <span class="email-copy__panes" aria-hidden="true">
+                <span class="email-copy__front">oliviaellensherwood@gmail.com</span>
+                <span class="email-copy__back">Click to copy to clipboard</span>
+              </span>
+              <span class="visually-hidden">Copy email address oliviaellensherwood@gmail.com to clipboard</span>
+            </button>
+            <span class="visually-hidden" aria-live="polite" data-copy-status></span>
+          </p>
+        </div>
+      </div>
+      <div class="footer__meta">
+        <p class="footer__legal">© 2026 Olivia Sherwood</p>
+        <p class="footer__credit">Website designed + developed by Olivia</p>
+        <p class="footer__clock">Leeds, UK <span class="footer__time" role="timer"></span></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/theme.js"></script>
+  <script src="../assets/js/nav.js"></script>
+  <script src="../assets/js/clock.js"></script>
+  <script src="../assets/js/email-copy.js"></script>
+</body>
+</html>
