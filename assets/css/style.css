@@ -992,6 +992,17 @@ a.carousel__frame { text-decoration: none; }
 
 .cs-prose p { font-size: var(--size-lede); }
 .cs-prose p + p { margin-top: var(--space-md); }
+.cs-prose ul,
+.cs-prose ol {
+  font-size: var(--size-lede);
+  margin-top: var(--space-md);
+  padding-left: 1.25em;
+}
+.cs-prose ul { list-style: disc; }
+.cs-prose ol { list-style: decimal; }
+.cs-prose li + li { margin-top: 0.25em; }
+.cs-prose ul + p,
+.cs-prose ol + p { margin-top: var(--space-md); }
 .cs-section h2 + .cs-prose { margin-top: var(--space-md); }
 
 /* Figures. Images are never cropped: they keep their natural aspect ratio and
